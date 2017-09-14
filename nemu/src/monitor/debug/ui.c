@@ -75,7 +75,7 @@ static int cmd_x(char *args)
   for (int k=1;k<n+1;k++)
   {
     result = vaddr_read(addr,i);
-    printf("0x%x: 0x%x",addr,result);
+    printf("0x%x: 0x%x\n",addr,result);
     addr=addr+4;
 
   }
