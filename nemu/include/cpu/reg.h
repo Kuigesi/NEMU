@@ -14,8 +14,7 @@ enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
  * For more details about the register encoding scheme, see i386 manual.
  */
 
-typedef struct{
-union {
+typedef union{
   union {
     uint32_t _32;
     uint16_t _16;
@@ -26,22 +25,13 @@ union {
 
   /* In NEMU, rtlreg_t is exactly uint32_t. This makes RTL instructions
    * in PA2 able to directly access these registers.
-   */
+
+*/
+  struct {
+
   rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
-
-};
-
-
-
-
-
-
-
-
-
-
   vaddr_t eip;
-
+  };
 } CPU_state;
 
 extern CPU_state cpu;
@@ -54,7 +44,6 @@ static inline int check_reg_index(int index) {
 #define reg_l(index) (cpu.gpr[check_reg_index(index)]._32)
 #define reg_w(index) (cpu.gpr[check_reg_index(index)]._16)
 #define reg_b(index) (cpu.gpr[check_reg_index(index) & 0x3]._8[index >> 2])
-
 extern const char* regsl[];
 extern const char* regsw[];
 extern const char* regsb[];
