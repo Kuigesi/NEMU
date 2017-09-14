@@ -64,6 +64,20 @@ static int cmd_info(char *args)
    }
     return 0;
 }
+static int cmd_x(char *args) 
+{
+  char *arg = strtok(NULL, " ");
+  char *arg2 = strtok(NULL, " ");
+  uint32_t addr,result;
+  int i = sscanf(arg,"%x",&addr);
+  i = sscanf(arg2,"%x",&addr);
+  i = 4;
+  result = vaddr_read(addr,i);
+  printf("0x%x: 0x%x",addr,result);
+  return 0;
+
+}
+
 
 
 static int cmd_q(char *args) {
@@ -82,6 +96,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "Execute the program by n steps", cmd_si },
   { "info", "Display informations about the register", cmd_info },
+  { "x", "Scan the memory", cmd_x },
 
   /* TODO: Add more commands */
 
