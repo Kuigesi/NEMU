@@ -33,7 +33,7 @@ static struct rule {
   {"!=", TK_NEQ},         //NOTEQUAL
   {"&&", TK_AND},         //AND
   {"\\|\\|", TK_OR},      //OR
-  {"!(\?!=)",TK_NO},     //NO
+  {"\\!(\?!(=))",TK_NO},     //NO
   {"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi)",TK_REG},  //REG
   {"[0123456789]{1,31}", TK_NUM},  //NUM
   {"0x[0123456789abcdef]{1,29}",TK_16NUM} //16NUM
