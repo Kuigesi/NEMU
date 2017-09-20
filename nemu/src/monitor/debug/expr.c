@@ -419,6 +419,10 @@ uint32_t eval(int p,int q)
 		   result = vaddr_read(addr,4);
 		   return result;
 	       }
+	       if(tokens[p].type==TK_NO)
+	       {
+		   return (!eval(p+1,q));    
+	       }
 
        }
        int val1 = eval(p,op-1);
@@ -440,6 +444,14 @@ uint32_t eval(int p,int q)
 		        return val1/val2;      
 		      }
 		      break;
+           case TK_EQ : return (val1==val2);
+		      break;
+	   case TK_NEQ : return (val1!=val2);
+		       break;
+           case TK_AND : return (val1&&val2);
+                       break;
+           case TK_OR : return (val1||val2);
+                       break;			
            default  : return 0;
 		      break;
        }
