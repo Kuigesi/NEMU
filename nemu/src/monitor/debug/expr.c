@@ -1,5 +1,6 @@
 #include "nemu.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
@@ -231,12 +232,16 @@ static int op_location(int p,int q)
    int parnum = 0;
    int m;
    bool detected1,detected2,possess1,possess2;
+   bool detected0,detectedand,detectedor,possess0,possessand,possessor;
    possess1=possess2=false;
+   possess0=possessand=possessor=false;
    int location1,location2;
-   location1=location2= -1;
+   int location0,locationand,locationor;
+   location1=location2=location0=locationand=locationor=-1;
    for( m = p;m<q+1;m++)
    {
 	   detected1=detected2=false;
+	   detected0=detectedand=detectedor=false;
 	   if(tokens[m].type=='('  )
 	   {
                   parnum++;
@@ -255,6 +260,18 @@ static int op_location(int p,int q)
 		   {
 			   detected2 = true;
 		   }
+		   if(tokens[m].type==TK_EQ||tokens[m].type==TK_NEQ )
+		   {
+			   detected0 = true;
+		   }
+		   if(tokens[m].type==TK_AND)
+		   {
+			   detectedand = true;
+		   }
+		   if(tokens[m].type==TK_OR)
+		   {
+			   detectedor = true;
+		   }
 	   }
 	   if(detected1 )
 	   {
@@ -266,20 +283,56 @@ static int op_location(int p,int q)
 		 possess2 = true;
 		 location2 = m;
 	   }
+	   if(detected0 )
+	   {
+		 possess0 = true;
+		 location0 = m;
+	   }
+	   if(detectedand )
+	   {
+		 possessand = true;
+		 locationand = m;
+	   }
+	   if(detectedor )
+	   {
+		 possessor = true;
+		 locationor = m;
+	   } 
    }
-   if(possess1 )
+   if(possessor )
    {
-           return location1;
+           return locationor;
    }
    else
    {
-	   if(possess2 )
+	   if(possessand )
 	   {
-                 return location2;
+                 return locationand;
 	   }
 	   else
 	   {
-		   return -1;
+		 if(possess0 )
+		 {
+                       return location0;
+		 }
+		 else
+		 {
+			 if(possess1 )
+			 {
+				 return location1;
+			 }
+			 else
+			 {
+                                 if(possess2 )
+				 {
+					 return location2;
+				 }
+				 else
+				 {
+					 return -1;
+				 }
+			 }
+		 }
 	   }
    }
 
@@ -288,7 +341,60 @@ uint32_t eval(int p,int q)
 {
   if(p==q)
   {
-    int val = atoi(tokens[p].str);
+    uint32_t val;
+   if(tokens[p].type==TK_NUM )
+   {
+     val = atoi(tokens[p].str);	   
+   } 
+   if(tokens[p].type==TK_16NUM)
+   {
+     int mn ;
+     mn = sscanf(tokens[p].str,"%x",&val);
+     if(mn!=1 )
+     {
+	mn =1;
+     }     
+   }
+   if(tokens[p].type==TK_REG)
+   {
+     char *regp = tokens[p].str;
+     char regid[3];
+     regid[0] = *regp;
+     regid[1] = *(regp + 1);
+     regid[2] = *(regp + 2);
+     if(regid[1]=='a'&&regid[2]=='x')
+     {
+	     val= cpu.eax;
+     }
+     if(regid[1]=='b'&&regid[2]=='x')
+     {
+	     val= cpu.ebx;
+     }
+     if(regid[1]=='c'&&regid[2]=='x')
+     {
+	     val= cpu.ecx;
+     }
+     if(regid[1]=='d'&&regid[2]=='x')
+     {
+	     val= cpu.edx;
+     }
+     if(regid[1]=='s'&&regid[2]=='p')
+     {
+	     val= cpu.esp;
+     }
+     if(regid[1]=='b'&&regid[2]=='p')
+     {
+	     val= cpu.ebp;
+     }
+     if(regid[1]=='s'&&regid[2]=='i')
+     {
+	     val= cpu.esi;
+     }
+     if(regid[1]=='d'&&regid[2]=='i')
+     {
+	     val= cpu.edi;
+     }
+   }
     return val;
   }
   else
@@ -302,7 +408,7 @@ uint32_t eval(int p,int q)
        int op = op_location(p,q);
        if (op==-1)
        {
-	       return 1;
+	       return 0;
        }
        int val1 = eval(p,op-1);
        int val2 = eval(op+1,q);
@@ -314,9 +420,16 @@ uint32_t eval(int p,int q)
 		      break;
            case '*' : return val1*val2;
 		      break;
-           case '/' : return val1/val2;
+           case '/' : if(val2==0)
+		      {
+		        return 0;
+		      }
+		      else
+		      {
+		        return val1/val2;      
+		      }
 		      break;
-           default  : return 1;
+           default  : return 0;
 		      break;
        }
     }
