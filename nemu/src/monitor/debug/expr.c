@@ -29,7 +29,7 @@ static struct rule {
   {"\\(", '('},         //left
   {"\\)", ')'},         //right			  
   {"==", TK_EQ},         // equal
-  {"\\d{1,32}", TK_NUM}  //NUM
+  {"\\d", TK_NUM}  //NUM
 
 };
 
@@ -113,7 +113,8 @@ static bool make_token(char *e) {
 		       m = substr_len;
 		       tokens[nr_token].str[m] = '\0';
 		       break;
-          default: break;
+          default:    TODO();
+		       break;
         }
 
         break;
@@ -136,7 +137,6 @@ uint32_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
 
   return 0;
 }
