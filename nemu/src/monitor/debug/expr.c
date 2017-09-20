@@ -86,32 +86,32 @@ static bool make_token(char *e) {
          */
         switch (rules[i].token_type) {
          case TK_NOTYPE : break;
-	 case '+' : nr_token++;
-		    tokens[nr_token].type = '+';
+	 case '+' : tokens[nr_token].type = '+';
+		    nr_token++;
                     break;
-         case '-' : nr_token++;
-		    tokens[nr_token].type = '-';
+         case '-' : tokens[nr_token].type = '-';
+		    nr_token++;
 		    break;
-         case '/' : nr_token++;
-                    tokens[nr_token].type = '/';
+         case '/' : tokens[nr_token].type = '/';
+		    nr_token++;
                     break;
-         case '*' : nr_token++;
-		    tokens[nr_token].type = '*';
+         case '*' : tokens[nr_token].type = '*';
+		    nr_token++;
 		    break;
-	 case '(' : nr_token++;
-		    tokens[nr_token].type = '(';
+	 case '(' : tokens[nr_token].type = '(';
+		    nr_token++;
 		    break;
-         case ')' : nr_token++;
-		    tokens[nr_token].type = ')';
+         case ')' : tokens[nr_token].type = ')';
+		    nr_token++;
 		    break;
-         case TK_NUM : nr_token++;
-		       tokens[nr_token].type = TK_NUM; 
+         case TK_NUM : tokens[nr_token].type = TK_NUM; 
                        for( m = 0;m < substr_len;m++)
 		       {
 			 tokens[nr_token].str[m] = *(substr_start + m);
 		       }
 		       m = substr_len;
 		       tokens[nr_token].str[m] = '\0';
+		       nr_token++;
 		       break;
           default:    TODO();
 		       break;
@@ -126,6 +126,7 @@ static bool make_token(char *e) {
       return false;
     }
   }
+  printf("nr_token : %d\n",nr_token);
 
   return true;
 }
