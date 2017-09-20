@@ -76,10 +76,25 @@ static int cmd_p(char *args)
 static int cmd_x(char *args) 
 {
   char *arg = strtok(NULL, " ");
-  char *arg2 = strtok(NULL, " ");
+  int len=0;
+  int i;
+  bool suc = true;
+  bool *succeed = &suc;
+  for( i=0;i<0x8fffffff;i++)
+  {
+     if(*(arg+i)=='\0')
+     {
+	     break;
+     }
+     else
+     {
+	     len ++;
+     }
+  }
+  char *arg2 = args + len +1;
   uint32_t addr,result;
   int n = atoi(arg);
-  int  i = sscanf(arg2,"%x",&addr);
+  addr = expr(arg2,succeed);
   i = 4;
   for (int k=1;k<n+1;k++)
   {
