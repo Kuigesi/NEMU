@@ -302,7 +302,7 @@ uint32_t eval(int p,int q)
        int op = op_location(p,q);
        if (op==-1)
        {
-	       return 0;
+	       return 1;
        }
        int val1 = eval(p,op-1);
        int val2 = eval(op+1,q);
@@ -316,7 +316,7 @@ uint32_t eval(int p,int q)
 		      break;
            case '/' : return val1/val2;
 		      break;
-           default  : return 0;
+           default  : return 1;
 		      break;
        }
     }
