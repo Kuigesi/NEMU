@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ
+  TK_NOTYPE = 256, TK_EQ,TK_NEQ ,TK_AND ,TK_OR,TK_NO,TK_ADDRESS,TK_NEGATIVE,TK_NUM,TK_16NUM,TK_REG 
 
   /* TODO: Add more token types */
 
@@ -21,10 +21,16 @@ static struct rule {
   /* TODO: Add more rules.
    * Pay attention to the precedence level of different rules.
    */
-
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
-  {"==", TK_EQ}         // equal
+  {"-", '-'},           //MINUS
+  {"/", '/'},           //DIVIDE
+  {"\\*", '*'},         // MULITE
+  {"\\(", '('},         //left
+  {"\\)", ')'},         //right			  
+  {"==", TK_EQ},         // equal
+  {"\\d{1,32}", TK_NUM}  //NUM
+
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -59,6 +65,7 @@ int nr_token;
 static bool make_token(char *e) {
   int position = 0;
   int i;
+  int m;
   regmatch_t pmatch;
 
   nr_token = 0;
@@ -73,14 +80,40 @@ static bool make_token(char *e) {
         Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s",
             i, rules[i].regex, position, substr_len, substr_len, substr_start);
         position += substr_len;
-
         /* TODO: Now a new token is recognized with rules[i]. Add codes
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-
         switch (rules[i].token_type) {
-          default: TODO();
+         case TK_NOTYPE : break;
+	 case '+' : nr_token++;
+		    tokens[nr_token].type = '+';
+                    break;
+         case '-' : nr_token++;
+		    tokens[nr_token].type = '-';
+		    break;
+         case '/' : nr_token++;
+                    tokens[nr_token].type = '/';
+                    break;
+         case '*' : nr_token++;
+		    tokens[nr_token].type = '*';
+		    break;
+	 case '(' : nr_token++;
+		    tokens[nr_token].type = '(';
+		    break;
+         case ')' : nr_token++;
+		    tokens[nr_token].type = ')';
+		    break;
+         case TK_NUM : nr_token++;
+		       tokens[nr_token].type = TK_NUM; 
+                       for( m = 0;m < substr_len;m++)
+		       {
+			 tokens[nr_token].str[m] = *(substr_start + m);
+		       }
+		       m = substr_len;
+		       tokens[nr_token].str[m] = '\0';
+		       break;
+          default: break;
         }
 
         break;
