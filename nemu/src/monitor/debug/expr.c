@@ -30,7 +30,14 @@ static struct rule {
   {"\\(", '('},         //left
   {"\\)", ')'},         //right			  
   {"==", TK_EQ},         // equal
-  {"[0123456789]{1,31}", TK_NUM}  //NUM
+  {"!=", TK_NEQ},         //NOTEQUAL
+  {"&&", TK_AND},         //AND
+  {"\\|\\|", TK_OR},      //OR
+  {"!(\?!=)",TK_NO},     //NO
+  {"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi)",TK_REG},  //REG
+  {"[0123456789]{1,31}", TK_NUM},  //NUM
+  {"0x[0123456789abcdef]{1,29}",TK_16NUM} //16NUM
+
 
 };
 
@@ -90,13 +97,41 @@ static bool make_token(char *e) {
 	 case '+' : tokens[nr_token].type = '+';
 		    nr_token++;
                     break;
-         case '-' : tokens[nr_token].type = '-';
+         case '-' : if(nr_token!=0)
+		    {
+		      if(tokens[nr_token-1].type == ')'||tokens[nr_token-1].type == TK_NUM||tokens[nr_token-1].type == TK_16NUM||tokens[nr_token-1].type == TK_REG )
+		      {
+			    tokens[nr_token].type = '-';  
+		      }
+		      else
+		      {
+			    tokens[nr_token].type = TK_NEGATIVE;
+		      }
+		    }
+                    else
+		    {
+			    tokens[nr_token].type = TK_NEGATIVE;
+		    }
 		    nr_token++;
 		    break;
          case '/' : tokens[nr_token].type = '/';
 		    nr_token++;
                     break;
-         case '*' : tokens[nr_token].type = '*';
+         case '*' : if(nr_token!=0)
+		    {
+                      if(tokens[nr_token-1].type == ')'||tokens[nr_token-1].type == TK_NUM||tokens[nr_token-1].type == TK_16NUM||tokens[nr_token-1].type == TK_REG )
+		      {
+			   tokens[nr_token].type = '*';   
+		      }
+		      else
+		      {
+			   tokens[nr_token].type = TK_ADDRESS;   
+		      }
+		    }
+		    else
+		    {
+			  tokens[nr_token].type = TK_ADDRESS;
+		    }
 		    nr_token++;
 		    break;
 	 case '(' : tokens[nr_token].type = '(';
@@ -114,6 +149,39 @@ static bool make_token(char *e) {
 		       tokens[nr_token].str[m] = '\0';
 		       nr_token++;
 		       break;
+         case TK_16NUM : tokens[nr_token].type = TK_16NUM;
+			 for( m = 0;m < substr_len;m++)
+			 {
+		           tokens[nr_token].str[m] = *(substr_start + m);
+			 }
+			 m = substr_len;
+			 tokens[nr_token].str[m] = '\0';
+                         nr_token++;
+			 break;
+	case TK_REG : tokens[nr_token].type = TK_REG;
+		      for( m = 0;m < substr_len-1;m++)
+	              {
+			  tokens[nr_token].str[m] = *(substr_start + m + 1);   
+		      }
+		      m = substr_len-1;
+		      tokens[nr_token].str[m] = '\0';
+		      nr_token++;
+		      break;
+       case TK_EQ : tokens[nr_token].type = TK_EQ;
+		    nr_token++;
+		    break;
+       case TK_NEQ : tokens[nr_token].type = TK_NEQ;
+		     nr_token++;
+		     break;
+       case TK_AND : tokens[nr_token].type = TK_AND;
+                     nr_token++;
+		     break; 
+       case TK_OR : tokens[nr_token].type = TK_OR;
+		    nr_token++;
+		    break;
+       case TK_NO : tokens[nr_token].type = TK_NO;
+		    nr_token++;
+		    break;
           default:    TODO();
 		       break;
         }
