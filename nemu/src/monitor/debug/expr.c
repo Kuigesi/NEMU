@@ -408,7 +408,18 @@ uint32_t eval(int p,int q)
        int op = op_location(p,q);
        if (op==-1)
        {
-	       return 0;
+	       if(tokens[p].type==TK_NEGATIVE)
+	       { 
+                   return -eval(p+1,q);
+	       }
+               if(tokens[p].type==TK_ADDRESS)
+	       {
+		   uint32_t result,addr;
+		   addr = eval(p+1,q);
+		   result = vaddr_read(addr,4);
+		   return result;
+	       }
+
        }
        int val1 = eval(p,op-1);
        int val2 = eval(op+1,q);
