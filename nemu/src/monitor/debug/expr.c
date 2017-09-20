@@ -29,7 +29,7 @@ static struct rule {
   {"\\(", '('},         //left
   {"\\)", ')'},         //right			  
   {"==", TK_EQ},         // equal
-  {"\\d", TK_NUM}  //NUM
+  {"[0123456789]*", TK_NUM}  //NUM
 
 };
 
