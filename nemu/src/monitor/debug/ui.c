@@ -64,6 +64,15 @@ static int cmd_info(char *args)
    }
     return 0;
 }
+static int cmd_p(char *args)
+{
+  bool suc = true;
+  bool *succeed = &suc;
+  int result;
+  result = expr(args,succeed);
+  printf("%d\n",result);
+  return 0;
+}
 static int cmd_x(char *args) 
 {
   char *arg = strtok(NULL, " ");
@@ -102,7 +111,7 @@ static struct {
   { "si", "Execute the program by n steps", cmd_si },
   { "info", "Display informations about the register", cmd_info },
   { "x", "Scan the memory", cmd_x },
-
+  { "p", "evaluate the expresson", cmd_p },
   /* TODO: Add more commands */
 
 };
