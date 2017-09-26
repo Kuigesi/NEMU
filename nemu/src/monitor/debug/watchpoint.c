@@ -75,7 +75,7 @@ void print_wp()
 	   while(temp!=NULL)
 	   {
 	      str = &temp->expr[0];
-	      printf("NO : %d  Expression : %s  Value : %d\n ",temp->NO,str,temp->key);
+	      printf("NO : %d  Expression : %s  Value : %d\n",temp->NO,str,temp->key);
 	      temp = temp->next;
 	   }
 	}
