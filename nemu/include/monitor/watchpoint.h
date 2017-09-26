@@ -15,4 +15,6 @@ void init_wp_pool();
 void print_wp();
 WP* new_wp();
 void free_wp(WP *wp);
+WP* wphead();
+WP* wpfree_();
 #endif

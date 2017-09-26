@@ -5,6 +5,14 @@
 
 static WP wp_pool[NR_WP];
 static WP *head, *free_;
+WP* wphead()
+{
+	return head;
+}
+WP* wpfree_()
+{
+	return free_;
+}
 WP* new_wp()
 {
     WP *temp,*temp2,*result;

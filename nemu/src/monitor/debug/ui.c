@@ -70,10 +70,31 @@ static int cmd_info(char *args)
 }
 static int cmd_w(char *args)
 {
+	WP *wp;
+	wp = new_wp();
+	wp->expr = args;
 	 return 0;
 }
 static int cmd_d(char *args)
 {
+	char *arg = strtok(NULL, " ");
+	int n = atoi(arg);
+	WP *temp = wphead();
+	if(temp!=NULL)
+	{
+		while(temp->NO!=n&&temp!=NULL)
+		{
+			temp = temp->next;
+		}
+                if(temp!=NULL)
+		{
+			free_wp(temp);
+		}
+	}
+	else
+	{
+		printf("no watchpoint to delete\n");
+	}
 	return 0;
 }
 static int cmd_p(char *args)
