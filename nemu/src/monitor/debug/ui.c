@@ -60,6 +60,7 @@ static int cmd_info(char *args)
       printf("ebp: 0x%08x %d\n",cpu.ebp,cpu.ebp);
       printf("esi: 0x%08x %d\n",cpu.esi,cpu.esi);
       printf("edi: 0x%08x %d\n",cpu.edi,cpu.edi);
+      printf("eip: 0x%08x %d\n",cpu.eip,cpu.eip);
 
    }
    if ( *arg == 'w')
@@ -72,7 +73,23 @@ static int cmd_w(char *args)
 {
 	WP *wp;
 	wp = new_wp();
-	wp->expr = args;
+	int i;
+	while(*args!=' ')
+	{
+		args++;
+	}
+        for( i=0;i<0x7fffffff;i++)
+	{
+	   if(*(args+i)=='\0')
+	   {
+		   wp->expr[i] = *(args+i);
+		   break;
+	   }
+	   else
+	   {
+		   wp->expr[i] = *(args+i);
+	   }
+	}
 	 return 0;
 }
 static int cmd_d(char *args)
@@ -113,7 +130,7 @@ static int cmd_x(char *args)
   int i;
   bool suc = true;
   bool *succeed = &suc;
-  for( i=0;i<0x8fffffff;i++)
+  for( i=0;i<0x7fffffff;i++)
   {
      if(*(arg+i)=='\0')
      {
@@ -157,7 +174,7 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "Execute the program by n steps", cmd_si },
-  { "info", "Display informations about the register", cmd_info },
+  { "info", "Display informations about the register or the watchpoint", cmd_info },  
   { "x", "Scan the memory", cmd_x },
   { "p", "evaluate the expresson", cmd_p },
   { "w", "add watchpoint", cmd_w},
