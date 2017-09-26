@@ -73,7 +73,7 @@ void print_wp()
 	   temp = head;
 	   while(temp!=NULL)
 	   {
-	      printf("%d : %s\n",temp->NO,temp->expr);
+	      printf("%d : %c\n",temp->NO,temp->expr[0]);
 	      temp = temp->next;
 	   }
 	}
