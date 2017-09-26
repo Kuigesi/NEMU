@@ -73,8 +73,11 @@ static int cmd_w(char *args)
 {
 	WP *wp;
 	wp = new_wp();
+	if(*args==' ')
+	{
+		args++;
+	}
 	int i;
-	printf("%s\n",args);
         for( i=0;i<0x7fffffff;i++)
 	{
 	   if(*(args+i)=='\0')
@@ -85,7 +88,6 @@ static int cmd_w(char *args)
 	   else
 	   {
 		   wp->expr[i] = *(args+i);
-		   printf("%c\n",wp->expr[i]);
 	   }
 	}
 	 return 0;
