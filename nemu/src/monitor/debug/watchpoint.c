@@ -95,6 +95,7 @@ void free_wp(WP* wp)
 	    {
 		 
 		    temp->NO = temp->NO -1;
+		    temp = temp->next;
 	    }
     }
     else
@@ -109,6 +110,7 @@ void free_wp(WP* wp)
        while(temp!=NULL )
        {
 	       temp->NO = temp->NO -1;
+	       temp = temp->next;
        }
     }
     temp = free_;
