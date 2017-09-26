@@ -73,21 +73,23 @@ static int cmd_w(char *args)
 {
 	WP *wp;
 	wp = new_wp();
-	if(*args==' ')
+	char *arg;
+	arg = args;
+	if(*(arg)==' ')
 	{
-		args++;
+		arg = arg +1;
 	}
 	int i;
         for( i=0;i<0x7fffffff;i++)
 	{
-	   if(*(args+i)=='\0')
+	   if(*(arg+i)=='\0')
 	   {
-		   wp->expr[i] = *(args+i);
+		   wp->expr[i] = *(arg+i);
 		   break;
 	   }
 	   else
 	   {
-		   wp->expr[i] = *(args+i);
+		   wp->expr[i] = *(arg+i);
 	   }
 	}
 	 return 0;
