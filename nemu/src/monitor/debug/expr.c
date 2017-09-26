@@ -35,7 +35,7 @@ static struct rule {
   {"&&", TK_AND},         //AND
   {"\\|\\|", TK_OR},      //OR
   {"!",TK_NO},     //NO
-  {"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi)",TK_REG},  //REG
+  {"\\$(eax|ecx|edx|ebx|esp|ebp|esi|edi|eip)",TK_REG},  //REG
   {"0x([0123456789abcdef]{1,29})",TK_16NUM}, //16NUM
   {"[0123456789]{1,31}", TK_NUM}  //NUM
 };
@@ -393,6 +393,10 @@ uint32_t eval(int p,int q)
      if(regid[1]=='d'&&regid[2]=='i')
      {
 	     val= cpu.edi;
+     }
+     if(regid[1]=='i'&&regid[2]=='p')
+     {
+	     val= cpu.eip;
      }
    }
     return val;
