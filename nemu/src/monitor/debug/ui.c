@@ -88,6 +88,11 @@ static int cmd_w(char *args)
 		   wp->expr[i] = *(arg+i);
 	   }
 	}
+	bool success = true;
+	bool *suc;
+	suc = &success;
+	arg = &wp->expr[0];
+	wp->key = expr(arg,suc);
 	 return 0;
 }
 static int cmd_d(char *args)

@@ -10,6 +10,7 @@ typedef struct watchpoint {
   /* TODO: Add more members if necessary */
   char expr[256];
   bool empty;
+  int key;
 } WP;
 void init_wp_pool();
 void print_wp();
