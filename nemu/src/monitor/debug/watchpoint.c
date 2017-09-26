@@ -53,6 +53,24 @@ WP* new_wp()
 
     return result;
 }
+void print_wp()
+{
+	if(head==NULL)
+	{
+           printf("no watchpoint\n");
+	}
+	else
+	{
+           WP *temp;
+	   temp = head;
+	   while(temp!=NULL)
+	   {
+	      printf("%d : %s\n",temp->NO,temp->expr);
+	      temp = temp->next;
+	   }
+	}
+	return;
+}
 void free_wp(WP* wp)
 {   
     if(wp->empty )

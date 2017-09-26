@@ -62,7 +62,19 @@ static int cmd_info(char *args)
       printf("edi: 0x%08x %d\n",cpu.edi,cpu.edi);
 
    }
+   if ( *arg == 'w')
+   {
+	print_wp();
+   }
     return 0;
+}
+static int cmd_w(char *args)
+{
+	 return 0;
+}
+static int cmd_d(char *args)
+{
+	return 0;
 }
 static int cmd_p(char *args)
 {
@@ -127,6 +139,8 @@ static struct {
   { "info", "Display informations about the register", cmd_info },
   { "x", "Scan the memory", cmd_x },
   { "p", "evaluate the expresson", cmd_p },
+  { "w", "add watchpoint", cmd_w},
+  { "d", "delete watchpoint", cmd_d}
   /* TODO: Add more commands */
 
 };
@@ -161,7 +175,7 @@ void ui_mainloop(int is_batch_mode) {
     cmd_c(NULL);
     return;
   }
-
+  init_wp_pool(); 
   while (1) {
     char *str = rl_gets();
     char *str_end = str + strlen(str);
