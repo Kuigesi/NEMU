@@ -75,10 +75,6 @@ static int cmd_w(char *args)
 	wp = new_wp();
 	char *arg;
 	arg = args;
-	if(*(arg)==32)
-	{
-		arg = arg +1;
-	}
 	int i;
         for( i=0;i<0x7fffffff;i++)
 	{

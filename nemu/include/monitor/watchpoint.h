@@ -8,7 +8,7 @@ typedef struct watchpoint {
   struct watchpoint *next;
 
   /* TODO: Add more members if necessary */
-  char expr[100];
+  char expr[256];
   bool empty;
 } WP;
 void init_wp_pool();
