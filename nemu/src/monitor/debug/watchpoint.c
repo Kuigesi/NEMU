@@ -71,9 +71,11 @@ void print_wp()
 	{
            WP *temp;
 	   temp = head;
+	   char *str;
+	   str = &temp->expr[0];
 	   while(temp!=NULL)
 	   {
-	      printf("%d : %c\n",temp->NO,temp->expr[0]);
+	      printf("%d : %s\n",temp->NO,str);
 	      temp = temp->next;
 	   }
 	}
