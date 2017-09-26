@@ -74,10 +74,6 @@ static int cmd_w(char *args)
 	WP *wp;
 	wp = new_wp();
 	int i;
-	while(*(args)!=' ')
-	{
-		args++;
-	}
 	printf("%s\n",args);
         for( i=0;i<0x7fffffff;i++)
 	{
