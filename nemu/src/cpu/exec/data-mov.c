@@ -6,13 +6,15 @@ make_EHelper(mov) {
 }
 
 make_EHelper(push) {
-  TODO();
-
+  uint32_t *p;
+  p = &id_src->val;
+  rtl_push(p);
   print_asm_template1(push);
 }
 
 make_EHelper(pop) {
-  TODO();
+ 
+
 
   print_asm_template1(pop);
 }

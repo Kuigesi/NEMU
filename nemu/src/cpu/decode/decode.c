@@ -113,6 +113,16 @@ make_DHelper(call_REL32)
 {
   decode_op_I(eip, id_dest, true);
 }
+
+make_DHelper(push_r32)
+{
+  decode_op_r(eip, id_src, true);    
+}
+make_DHelper(pop_r32)
+{
+  decode_op_r(eip, id_dest, true);
+}
+
 make_DHelper(G2E) {
   decode_op_rm(eip, id_dest, true, id_src, true);
 }

@@ -142,13 +142,19 @@ static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
 static inline void rtl_push(const rtlreg_t* src1) {
   // esp <- esp - 4
   // M[esp] <- src1
-  TODO();
+  cpu.esp = cpu.esp -4;
+  uint32_t datat;
+   datat  = (*src1);
+  vaddr_write(cpu.esp,4,datat);
 }
 
 static inline void rtl_pop(rtlreg_t* dest) {
   // dest <- M[esp]
   // esp <- esp + 4
-  TODO();
+  uint32_t datat;
+  datat = vaddr_read(cpu.esp,4);
+  (*dest) = datat;
+  cpu.esp = cpu.esp +4;
 }
 
 static inline void rtl_eq0(rtlreg_t* dest, const rtlreg_t* src1) {
