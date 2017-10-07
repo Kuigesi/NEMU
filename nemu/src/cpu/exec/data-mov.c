@@ -7,7 +7,7 @@ make_EHelper(mov) {
 
 make_EHelper(push) {
   uint32_t *p;
-  p = &id_src->val;
+  p = &id_dest->val;
   rtl_push(p);
   print_asm_template1(push);
 }
