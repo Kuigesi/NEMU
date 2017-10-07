@@ -109,6 +109,10 @@ static inline make_DopHelper(O) {
 /* Eb <- Gb
  * Ev <- Gv
  */
+make_DHelper(call_REL32)
+{
+  decode_op_I(eip, id_dest, true);
+}
 make_DHelper(G2E) {
   decode_op_rm(eip, id_dest, true, id_src, true);
 }
