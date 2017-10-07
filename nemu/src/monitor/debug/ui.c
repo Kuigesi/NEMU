@@ -31,6 +31,136 @@ static int cmd_c(char *args) {
   cpu_exec(-1);
   return 0;
 }
+static int cmd_si(char *args)
+{
+   char *arg = strtok(NULL, " ");
+   int n;
+   if (arg == NULL)
+   {
+	   
+	 n = 1; 
+   }
+   else
+   {
+	   n = atoi(arg);
+   }
+   cpu_exec(n);
+   return 0;
+}
+static int cmd_info(char *args)
+{
+   char *arg = strtok(NULL, " ");
+   if ( *arg == 'r')
+   {
+      printf("eax: 0x%08x %d\n",cpu.eax,cpu.eax);
+      printf("ecx: 0x%08x %d\n",cpu.ecx,cpu.ecx);
+      printf("edx: 0x%08x %d\n",cpu.edx,cpu.edx);
+      printf("ebx: 0x%08x %d\n",cpu.ebx,cpu.ebx);
+      printf("esp: 0x%08x %d\n",cpu.esp,cpu.esp);
+      printf("ebp: 0x%08x %d\n",cpu.ebp,cpu.ebp);
+      printf("esi: 0x%08x %d\n",cpu.esi,cpu.esi);
+      printf("edi: 0x%08x %d\n",cpu.edi,cpu.edi);
+      printf("eip: 0x%08x %d\n",cpu.eip,cpu.eip);
+
+   }
+   if ( *arg == 'w')
+   {
+	print_wp();
+   }
+    return 0;
+}
+static int cmd_w(char *args)
+{
+	WP *wp;
+	wp = new_wp();
+	char *arg;
+	arg = args;
+	int i;
+        for( i=0;i<0x7fffffff;i++)
+	{
+	   if(*(arg+i)=='\0')
+	   {
+		   wp->expr[i] = *(arg+i);
+		   break;
+	   }
+	   else
+	   {
+		   wp->expr[i] = *(arg+i);
+	   }
+	}
+	bool success = true;
+	bool *suc;
+	suc = &success;
+	arg = &wp->expr[0];
+	wp->key = expr(arg,suc);
+	 return 0;
+}
+static int cmd_d(char *args)
+{
+	char *arg = strtok(NULL, " ");
+	int n = atoi(arg);
+	WP *temp = wphead();
+	if(temp!=NULL)
+	{
+		while(temp->NO!=n&&temp!=NULL)
+		{
+			temp = temp->next;
+		}
+                if(temp!=NULL)
+		{
+			free_wp(temp);
+		}
+	}
+	else
+	{
+		printf("no watchpoint to delete\n");
+	}
+	return 0;
+}
+static int cmd_p(char *args)
+{
+  bool suc = true;
+  bool *succeed = &suc;
+  int result;
+  result = expr(args,succeed);
+  printf("%d\n",result);
+  return 0;
+}
+static int cmd_x(char *args) 
+{
+  char *arg = strtok(NULL, " ");
+  int len=0;
+  int i;
+  bool suc = true;
+  bool *succeed = &suc;
+  for( i=0;i<0x7fffffff;i++)
+  {
+     if(*(arg+i)=='\0')
+     {
+	     break;
+     }
+     else
+     {
+	     len ++;
+     }
+  }
+  char *arg2 = args + len +1;
+  uint32_t addr,result;
+  int n = atoi(arg);
+  addr = expr(arg2,succeed);
+  i = 4;
+  for (int k=1;k<n+1;k++)
+  {
+    result = vaddr_read(addr,i);
+    printf("0x%08x: 0x%08x\n",addr,result);
+    addr=addr+4;
+
+  }
+  return 0;
+
+}
+
+
 
 static int cmd_q(char *args) {
   return -1;
@@ -46,7 +176,12 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  { "si", "Execute the program by n steps", cmd_si },
+  { "info", "Display informations about the register or the watchpoint", cmd_info },  
+  { "x", "Scan the memory", cmd_x },
+  { "p", "evaluate the expresson", cmd_p },
+  { "w", "add watchpoint", cmd_w},
+  { "d", "delete watchpoint", cmd_d}
   /* TODO: Add more commands */
 
 };
@@ -81,7 +216,7 @@ void ui_mainloop(int is_batch_mode) {
     cmd_c(NULL);
     return;
   }
-
+  init_wp_pool(); 
   while (1) {
     char *str = rl_gets();
     char *str_end = str + strlen(str);
