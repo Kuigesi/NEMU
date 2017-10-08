@@ -18,16 +18,26 @@ make_EHelper(sub) {
 	 temp2 = val1;
 	 p = &temp2;
 	 rtl_sr(id_dest->reg,4,p );
-	 printf("temp2 : %d\n",*p);
 	 rtl_update_ZFSF(p,4);
-         rtl_get_ZF(p);
-	 printf("ZF : %d\n",temp2);
-	 rtl_get_SF(p);
-	 printf("SF : %d\n",temp2);
-	 rtl_get_CF(p);
-	 printf("CF : %d\n",temp2);
-	 rtl_get_OF(p);
-	 printf("OF : %d\n",temp2);
+	 cpu.OF = 0;
+	 cpu.CF = 0;
+         long long s1,s2,s3,s4;
+	 s1 = temp;
+	 s2 = id_src->simm;
+	 s3 = s1 - s2;
+	 s4 = val1;
+	 if(s4!=s3)
+	 {
+		 cpu.OF = 1;
+	 }
+	 unsigned int u1,u2;
+	 u1 = temp;
+	 u2 = id_src->simm;
+	 if(u1<u2)
+	 {
+		 cpu.CF = 1;
+	 }
+
  } 
 
   print_asm_template2(sub);
