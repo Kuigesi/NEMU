@@ -31,8 +31,11 @@ make_EHelper(call) {
 }
 
 make_EHelper(ret) {
-  TODO();
-
+  uint32_t temp;
+  uint32_t *p;
+  p = &temp;
+  rtl_pop(p);
+  cpu.eip = temp;
   print_asm("ret");
 }
 
