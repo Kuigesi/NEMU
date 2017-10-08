@@ -36,7 +36,6 @@ make_EHelper(call) {
 }
 
 make_EHelper(ret) {
-  printf("1\n");
   uint32_t temp;
   uint32_t *p;
   p = &temp;
