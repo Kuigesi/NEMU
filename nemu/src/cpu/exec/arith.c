@@ -18,6 +18,7 @@ make_EHelper(sub) {
 	 temp2 = val1;
 	 p = &temp2;
 	 rtl_sr(id_dest->reg,4,p );
+	 rtl_update_ZFSF(p,4);
          rtl_get_ZF(p);
 	 printf("ZF : %d\n",temp2);
 	 rtl_get_SF(p);
