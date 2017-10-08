@@ -61,6 +61,10 @@ static int cmd_info(char *args)
       printf("esi: 0x%08x %d\n",cpu.esi,cpu.esi);
       printf("edi: 0x%08x %d\n",cpu.edi,cpu.edi);
       printf("eip: 0x%08x %d\n",cpu.eip,cpu.eip);
+      printf("ZF: %d ",cpu.ZF);
+      printf("SF: %d ",cpu.SF);
+      printf("CF: %d ",cpu.CF);
+      printf("OF: %d\n",cpu.OF);
 
    }
    if ( *arg == 'w')
