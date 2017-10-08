@@ -7,7 +7,19 @@ make_EHelper(add) {
 }
 
 make_EHelper(sub) {
-  TODO();
+ if(id_src->width==1)
+ {
+	 int  val1;
+	 int temp;
+	 temp = id_dest->val;
+	 val1 = temp -( id_src->simm);
+	 uint32_t *p;
+	 uint32_t temp2;
+	 temp2 = val1;
+	 p = &temp2;
+	 rtl_sr(id_dest->reg,1,p );
+
+ } 
 
   print_asm_template2(sub);
 }
