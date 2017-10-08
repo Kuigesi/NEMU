@@ -17,8 +17,6 @@ make_EHelper(sub) {
 	 uint32_t temp2;
 	 temp2 = val1;
 	 p = &temp2;
-	 printf("reg %d\n",id_dest->reg);
-	 printf("simm %d\n",temp2);
 	 rtl_sr(id_dest->reg,4,p );
 
  } 
