@@ -14,8 +14,11 @@ make_EHelper(push) {
 
 make_EHelper(pop) {
  
-
-
+ uint32_t temp;
+ uint32_t *p;
+ p = &temp;
+ rtl_pop(p);
+ rtl_sr(id_dest->reg,4,p);
   print_asm_template1(pop);
 }
 
