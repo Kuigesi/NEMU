@@ -134,6 +134,10 @@ make_DHelper(G2E) {
 make_DHelper(mov_G2E) {
   decode_op_rm(eip, id_dest, false, id_src, true);
 }
+make_DHelper(xor_G2E)
+{
+	decode_op_rm(eip, id_dest, true, id_src, true);
+}
 
 /* Gb <- Eb
  * Gv <- Ev
