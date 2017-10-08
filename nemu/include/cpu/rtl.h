@@ -189,6 +189,7 @@ static inline void rtl_update_ZF(const rtlreg_t* result, int width) {
   rtlreg_t temp2;
   temp2 = (*result);
   temp = temp2;
+  printf("temp : %d\n",temp );
   temp = temp<<(8*(4-width ) );
   if(temp==0)
   {
