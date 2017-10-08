@@ -41,7 +41,8 @@ make_EHelper(ret) {
   uint32_t *p;
   p = &temp;
   rtl_pop(p);
-  cpu.eip = temp;
+  decoding.is_jmp = 1;
+  decoding.jmp_eip = temp;
   print_asm("ret");
 }
 
