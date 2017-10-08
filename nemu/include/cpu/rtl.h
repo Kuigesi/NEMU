@@ -116,7 +116,7 @@ static inline void rtl_sr(int r, int width, const rtlreg_t* src1) {
     rtlreg_t temp;\
     temp = (*src);\
     temp = temp&0x00000001;\
-    	  \
+   cpu.f = temp;	  \
   } \
   static inline void concat(rtl_get_, f) (rtlreg_t* dest) { \
     uint32_t temp;\
