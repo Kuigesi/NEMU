@@ -119,7 +119,7 @@ make_DHelper(call_REL32)
 }
 make_DHelper(ret_REL32)
 {
-  decode_op_I(eip, id_dest, true);
+ 
 }
 
 make_DHelper(push_r32)
