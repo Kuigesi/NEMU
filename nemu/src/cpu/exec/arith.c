@@ -18,7 +18,14 @@ make_EHelper(sub) {
 	 temp2 = val1;
 	 p = &temp2;
 	 rtl_sr(id_dest->reg,4,p );
-
+         rtl_get_ZF(p);
+	 printf("ZF : %d\n",temp2);
+	 rtl_get_SF(p);
+	 printf("SF : %d\n",temp2);
+	 rtl_get_CF(p);
+	 printf("CF : %d\n",temp2);
+	 rtl_get_OF(p);
+	 printf("OF : %d\n",temp2);
  } 
 
   print_asm_template2(sub);
