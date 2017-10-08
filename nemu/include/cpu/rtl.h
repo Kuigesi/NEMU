@@ -120,8 +120,9 @@ static inline void rtl_sr(int r, int width, const rtlreg_t* src1) {
   } \
   static inline void concat(rtl_get_, f) (rtlreg_t* dest) { \
     uint32_t temp;\
-    temp = 1;\
-   (*dest) = temp ;	  \
+    temp = cpu.f;\
+   (*dest) = temp ;	\
+     \
   }
 
 make_rtl_setget_eflags(CF)
