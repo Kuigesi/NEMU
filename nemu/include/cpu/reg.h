@@ -27,10 +27,30 @@ typedef union{
    * in PA2 able to directly access these registers.
 
 */
-  struct {
-
+  struct 
+  {
   rtlreg_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
   vaddr_t eip;
+  union
+    {
+   uint32_t EFLAGS;
+  struct
+    {
+   uint8_t CF :1;
+   uint8_t PF :1;
+   uint8_t    :4;
+   uint8_t ZF :1;
+   uint8_t SF :1;
+   uint8_t    :1;
+   uint8_t IF :1;
+   uint8_t    :1;
+   uint8_t OF :1;
+   uint8_t    :4;
+   uint8_t    :8;
+   uint8_t    :8;   
+    };
+    };
+
   };
 } CPU_state;
 

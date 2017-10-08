@@ -224,6 +224,10 @@ static inline void update_eip(void) {
 }
 
 void exec_wrapper(bool print_flag) {
+	int len;
+	len = sizeof(cpu);
+	printf("cpusize %d\n",len);
+
 #ifdef DEBUG
   decoding.p = decoding.asm_buf;
   decoding.p += sprintf(decoding.p, "%8x:   ", cpu.eip);
