@@ -37,6 +37,7 @@ make_EHelper(ret) {
   p = &temp;
   rtl_pop(p);
   cpu.eip = temp&0x0000ffff;
+  printf("1\n");
   print_asm("ret");
 }
 
