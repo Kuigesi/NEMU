@@ -24,7 +24,8 @@ make_EHelper(xchg);
 make_EHelper(cmp);
 make_EHelper(movzx);
 make_EHelper(movsx);
-
+make_EHelper(jcc);
+make_EHelper(jmp);
 
 make_EHelper(inv);
 make_EHelper(nemu_trap);
