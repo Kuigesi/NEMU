@@ -8,10 +8,7 @@ make_EHelper(mov) {
 make_EHelper(push) {
   uint32_t *p;
   p = &id_dest->val;
-  if(id_dest->type==OP_TYPE_MEM)
-  {
-	  printf("666666666666666\n");
-  }
+  printf("%x \n",*p);
   if(id_dest->type==OP_TYPE_MEM)
   {
 	  uint32_t temp;
