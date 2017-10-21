@@ -1,45 +1,69 @@
 #include "cpu/exec.h"
 
 make_EHelper(add) {
-  TODO();
-
+  cpu.OF = 0;
+  cpu.CF = 0;
+  int temp,temp1,temp2;
+  unsigned int tempu,tempu1,tempu2;
+  unsigned long long  templu,templu1,templu2,templur;
+  long long templ,templ1,templ2,templr;
+  uint32_t *p;
+  temp1 = id_src->val;
+  temp2 = id_dest->val;
+  tempu1 = id_src->val;
+  tempu2 = id_dest->val;
+  temp = id_src->val + id_dest->val;
+  tempu = temp;
+  p = &tempu;
+  operand_write(id_dest,p);
+  rtl_update_ZFSF(p,id_dest->width);
+  templ1 = temp1;
+  templ2 = temp2;
+  templ = templ1 + templ2;
+  templr = temp;
+  if(templr!=templ)
+  {
+     cpu.OF = 1;
+  }
+  templu1 = tempu1;
+  templu2 = tempu2;
+  templu = templu1 + templu2;
+  templur = tempu;
+  if(templur!=templu)
+  {
+     cpu.CF = 1;
+  }
   print_asm_template2(add);
 }
 
 make_EHelper(sub) {
- if(id_src->width==1)
+ cpu.OF = 0;
+ cpu.CF = 0;
+ int temp,temp1,temp2;
+ unsigned int tempu,tempu1,tempu2;
+ long long templ,templ1,templ2,templr;
+ uint32_t *p;
+ temp1 = id_src->val;
+ temp2 = id_dest->val;
+ tempu1 = id_src->val;
+ tempu2 = id_dest->val;
+ temp = id_dest->val - id_src->val;
+ tempu = temp;
+ p = &tempu;
+ operand_write(id_dest,p);
+ rtl_update_ZFSF(p,id_dest->width);
+ templ1 = temp1;
+ templ2 = temp2;
+ templ = templ2 - templ1;
+ templr = temp;
+ if(templr!=templ)
  {
-	 int  val1;
-	 int temp;
-	 temp = id_dest->val;
-	 val1 = temp -( id_src->simm);
-	 uint32_t *p;
-	 uint32_t temp2;
-	 temp2 = val1;
-	 p = &temp2;
-	 operand_write(id_dest,p);
-	 rtl_update_ZFSF(p,4);
-	 cpu.OF = 0;
-	 cpu.CF = 0;
-         long long s1,s2,s3,s4;
-	 s1 = temp;
-	 s2 = id_src->simm;
-	 s3 = s1 - s2;
-	 s4 = val1;
-	 if(s4!=s3)
-	 {
-		 cpu.OF = 1;
-	 }
-	 unsigned int u1,u2;
-	 u1 = temp;
-	 u2 = id_src->simm;
-	 if(u1<u2)
-	 {
-		 cpu.CF = 1;
-	 }
-
+	cpu.OF = 1;
  } 
-
+ if(tempu2<tempu1)
+ {
+	 cpu.CF = 1;
+ } 
   print_asm_template2(sub);
 }
 
