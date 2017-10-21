@@ -8,7 +8,6 @@ make_EHelper(mov) {
 make_EHelper(push) {
   uint32_t *p;
   p = &id_dest->val;
-  printf("%x \n",*p);
   if(decoding.is_operand_size_16)
   {
          uint32_t datat;
