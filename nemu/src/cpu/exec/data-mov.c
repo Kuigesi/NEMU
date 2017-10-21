@@ -9,16 +9,6 @@ make_EHelper(push) {
   uint32_t *p;
   p = &id_dest->val;
   printf("%x \n",*p);
-  if(id_dest->type==OP_TYPE_MEM)
-  {
-	  uint32_t temp;
-	  temp = vaddr_read(id_dest->addr,id_dest->width);
-	  printf("%x \n",temp);
-
-	  p = &temp;
-	  printf("%x \n",*p);
-  }
-  printf("%x \n",*p);
   if(decoding.is_operand_size_16)
   {
          uint32_t datat;
