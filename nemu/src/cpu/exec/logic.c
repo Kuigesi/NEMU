@@ -114,7 +114,11 @@ make_EHelper(setcc) {
 }
 
 make_EHelper(not) {
-  TODO();
-
+  uint32_t temp;
+  uint32_t *p;
+  p = &temp;
+  temp = id_dest->val;
+  rtl_not(p);
+  operand_write(id_dest,p);
   print_asm_template1(not);
 }
