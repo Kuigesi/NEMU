@@ -21,6 +21,7 @@ make_EHelper(not);
 make_EHelper(inc);
 make_EHelper(dec);
 make_EHelper(xchg);
+make_EHelper(cmp);
 
 
 

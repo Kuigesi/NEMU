@@ -68,8 +68,32 @@ make_EHelper(sub) {
 }
 
 make_EHelper(cmp) {
-  TODO();
-
+  cpu.OF = 0;
+  cpu.CF = 0;
+  int temp,temp1,temp2;
+  unsigned int tempu,tempu1,tempu2;
+  long long templ,templ1,templ2,templr;
+  uint32_t *p;
+  temp1 = id_src->val;
+  temp2 = id_dest->val;
+  tempu1 = id_src->val;
+  tempu2 = id_dest->val;
+  temp = id_dest->val - id_src->val;
+  tempu = temp;
+  p = &tempu;
+  rtl_update_ZFSF(p,id_dest->width);
+  templ1 = temp1;
+  templ2 = temp2;
+  templ = templ2 - templ1;
+  templr = temp;
+  if(templr!=templ)
+  {
+	cpu.OF = 1;
+  } 
+  if(tempu2<tempu1)
+  {
+	cpu.CF = 1;
+  }  
   print_asm_template2(cmp);
 }
 
