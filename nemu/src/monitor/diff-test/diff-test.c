@@ -146,10 +146,55 @@ void difftest_step(uint32_t eip) {
 
   gdb_si();
   gdb_getregs(&r);
+  if(r.eax!=cpu.eax)
+  {
+	  diff = true;
+	  printf("Qemu eax: %d  Nemu eax: %d\n",r.eax,cpu.eax); 
+
+  }
+  if(r.ecx!=cpu.ecx)
+  {
+	  diff = true;
+	  printf("Qemu ecx: %d  Nemu ecx: %d\n",r.ecx,cpu.ecx);
+  }
+  if(r.edx!=cpu.edx)
+  {
+          diff = true;
+	  printf("Qemu edx: %d  Nemu edx: %d\n",r.edx,cpu.edx);
+  }
+  if(r.ebx!=cpu.ebx)
+  {
+	  diff = true;
+	  printf("Qemu ebx: %d  Nemu ebx: %d\n",r.ebx,cpu.ebx);
+  }
+  if(r.esp!=cpu.esp)
+  {
+	  diff = true;
+	  printf("Qemu esp: %d  Nemu esp: %d\n",r.esp,cpu.esp);
+  }
+  if(r.ebp!=cpu.ebp)
+  {
+	  diff = true;
+	  printf("Qemu ebp: %d  Nemu ebp: %d\n",r.ebp,cpu.ebp);
+  }
+  if(r.esi!=cpu.esi)
+  {
+          diff = true;
+	  printf("Qemu esi: %d  Nemu esi: %d\n",r.esi,cpu.esi);
+  }
+  if(r.edi!=cpu.edi)
+  {
+	  diff = true;
+          printf("Qemu edi: %d  Nemu edi: %d\n",r.edi,cpu.edi);
+  }
+  if(r.eip!=cpu.eip)
+  {
+	  diff = true;
+	  printf("Qemu eip: %d  Nemu eip: %d\n",r.eip,cpu.eip);
+  }
 
   // TODO: Check the registers state with QEMU.
   // Set `diff` as `true` if they are not the same.
-  TODO();
 
   if (diff) {
     nemu_state = NEMU_END;
