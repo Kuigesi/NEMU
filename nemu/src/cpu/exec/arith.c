@@ -17,7 +17,7 @@ make_EHelper(sub) {
 	 uint32_t temp2;
 	 temp2 = val1;
 	 p = &temp2;
-	 rtl_sr(id_dest->reg,4,p );
+	 operand_write(id_dest,p);
 	 rtl_update_ZFSF(p,4);
 	 cpu.OF = 0;
 	 cpu.CF = 0;
