@@ -15,6 +15,7 @@ make_EHelper(and) {
   p1 = &temp1;
   p2 = &temp2;
   rtl_and(p,p1,p2);
+  printf("%d\n",temp);
   operand_write(id_dest,p);
   cpu.OF = cpu.CF = 0;
   rtl_update_ZFSF(p,id_dest->width);
