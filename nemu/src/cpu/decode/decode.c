@@ -41,6 +41,7 @@ static inline make_DopHelper(SI) {
   int temp;
   int len;
   len = op->width;
+  printf("%d ",len);
   temp = instr_fetch(eip, op->width);
   temp = ((temp<<((4-len)>>3))>>((4-len)>>3)) ;
   op->simm = temp;
