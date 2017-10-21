@@ -7,8 +7,17 @@ make_EHelper(test) {
 }
 
 make_EHelper(and) {
-  TODO();
-
+  uint32_t temp,temp1,temp2;
+  uint32_t *p,*p1,*p2;
+  temp1 = id_dest->val;
+  temp2 = id_src->val;
+  p = &temp;
+  p1 = &temp1;
+  p2 = &temp2;
+  rtl_and(p,p1,p2);
+  operand_write(id_dest,p);
+  cpu.OF = cpu.CF = 0;
+  rtl_update_ZFSF(p,id_dest->width);
   print_asm_template2(and);
 }
 
@@ -21,9 +30,9 @@ make_EHelper(xor) {
   p1 = &temp1;
   p2 = &temp2;
   rtl_xor(p,p1,p2);
-  rtl_sr(id_dest->reg,4,p);
+  operand_write(id_dest,p);
   cpu.OF = cpu.CF = 0;
-  rtl_update_ZFSF(p,4);
+  rtl_update_ZFSF(p,id_dest->width);
   print_asm_template2(xor);
 }
 
