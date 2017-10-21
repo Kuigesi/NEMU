@@ -23,6 +23,7 @@ make_EHelper(push) {
   {
 	  p = &id_dest->val;
   }
+  printf("%x \n",*p);
   if(decoding.is_operand_size_16)
   {
          uint32_t datat;
