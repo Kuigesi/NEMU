@@ -20,7 +20,7 @@ make_EHelper(push) {
 	  p = &temp;
 	  printf("%x \n",*p);
   }
-  else
+  if(id_dest->type==OP_TYPE_REG)
   {
 	  p = &id_dest->val;
   }
