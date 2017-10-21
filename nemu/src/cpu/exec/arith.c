@@ -98,14 +98,69 @@ make_EHelper(cmp) {
 }
 
 make_EHelper(inc) {
-  TODO();
-
+  cpu.OF = 0;
+  cpu.CF = 0;
+  int temp,temp1,temp2;
+  unsigned int tempu,tempu1,tempu2;
+  unsigned long long templu,templu1,templu2,templur;
+  long long templ,templ1,templ2,templr;
+  uint32_t *p;
+  temp1 = 1;
+  temp2 = id_dest->val;
+  tempu1 = 1;
+  tempu2 = id_dest->val; 
+  temp = temp2 + temp1;
+  tempu = temp;
+  p = &tempu;
+  operand_write(id_dest,p);
+  rtl_update_ZFSF(p,id_dest->width);
+  templ1 = temp1;
+  templ2 = temp2;
+  templ = templ2 + templ1;
+  templr = temp;
+  if(templr!=templ) 
+  { 
+	   cpu.OF = 1;
+  }
+  templu1 = tempu1;
+  templu2 = tempu2;
+  templu = templu1 + templu2;
+  templur = tempu;
+  if(templur!=templu)
+  {
+	  cpu.CF = 1;
+  }
   print_asm_template1(inc);
 }
 
 make_EHelper(dec) {
-  TODO();
-
+  cpu.OF = 0;
+  cpu.CF = 0;
+  int temp,temp1,temp2;
+  unsigned int tempu,tempu1,tempu2;
+  long long templ,templ1,templ2,templr;
+  uint32_t *p;
+  temp1 = 1;
+  temp2 = id_dest->val;
+  tempu1 = 1;
+  tempu2 = id_dest->val;
+  temp = temp2 - temp1;
+  tempu = temp;
+  p = &tempu;
+  operand_write(id_dest,p);
+  rtl_update_ZFSF(p,id_dest->width);
+  templ1 = temp1;
+  templ2 = temp2;
+  templ = templ2 - templ1;
+  templr = temp;
+  if(templr!=templ)
+  {
+     cpu.OF = 1;
+  }
+  if(tempu2<tempu1)
+  {
+     cpu.CF = 1;
+  }
   print_asm_template1(dec);
 }
 
