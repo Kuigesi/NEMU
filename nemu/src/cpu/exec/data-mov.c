@@ -11,6 +11,8 @@ make_EHelper(push) {
   {
 	  uint32_t temp;
 	  temp = vaddr_read(id_dest->addr,id_dest->width);
+	  printf("%x \n",temp);
+
 	  p = &temp;
   }
   else
