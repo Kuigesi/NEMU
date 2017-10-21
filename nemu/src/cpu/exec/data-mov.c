@@ -39,6 +39,15 @@ make_EHelper(pop) {
  operand_write(id_dest,p);
   print_asm_template1(pop);
 }
+make_EHelper(xchg)
+{
+	uint32_t temp;
+        temp = id_src->val;
+	operand_write(id_src,&id_dest->val);
+	operand_write(id_dest,&temp);
+	print_asm("xchg");
+        
+}
 
 make_EHelper(pusha) {
   TODO();
