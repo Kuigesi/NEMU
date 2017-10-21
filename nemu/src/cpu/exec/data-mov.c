@@ -7,6 +7,7 @@ make_EHelper(mov) {
 
 make_EHelper(push) {
   uint32_t *p;
+  p = &id_dest->val;
   if(id_dest->type==OP_TYPE_MEM)
   {
 	  printf("666666666666666\n");
@@ -19,10 +20,6 @@ make_EHelper(push) {
 
 	  p = &temp;
 	  printf("%x \n",*p);
-  }
-  if(id_dest->type==OP_TYPE_REG)
-  {
-	  p = &id_dest->val;
   }
   printf("%x \n",*p);
   if(decoding.is_operand_size_16)
