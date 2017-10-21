@@ -9,6 +9,10 @@ make_EHelper(push) {
   uint32_t *p;
   if(id_dest->type==OP_TYPE_MEM)
   {
+	  printf("666666666666666\n");
+  }
+  if(id_dest->type==OP_TYPE_MEM)
+  {
 	  uint32_t temp;
 	  temp = vaddr_read(id_dest->addr,id_dest->width);
 	  printf("%x \n",temp);
