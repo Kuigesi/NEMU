@@ -22,7 +22,8 @@ make_EHelper(inc);
 make_EHelper(dec);
 make_EHelper(xchg);
 make_EHelper(cmp);
-
+make_EHelper(movzx);
+make_EHelper(movsx);
 
 
 make_EHelper(inv);

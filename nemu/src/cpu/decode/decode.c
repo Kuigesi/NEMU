@@ -53,7 +53,6 @@ static inline make_DopHelper(SI) {
   snprintf(op->str, OP_STR_SIZE, "$0x%x", op->simm);
 #endif
 }
-
 /* I386 manual does not contain this abbreviation.
  * It is convenient to merge them into a single helper function.
  */
@@ -160,7 +159,14 @@ make_DHelper(mov_E2G) {
 make_DHelper(lea_M2G) {
   decode_op_rm(eip, id_src, false, id_dest, false);
 }
-
+make_DHelper(movb_E2G) {
+  id_src->width = 1;
+  decode_op_rm(eip, id_src, true, id_dest, false);
+}
+make_DHelper(movw_E2G) {
+  id_src->width = 2;
+  decode_op_rm(eip, id_src, true, id_dest, false);
+}
 /* AL <- Ib
  * eAX <- Iv
  */
