@@ -7,7 +7,16 @@ make_EHelper(mov) {
 
 make_EHelper(push) {
   uint32_t *p;
-  p = &id_dest->val;
+  if(id_dest->type==OP_TYPE_MEM)
+  {
+	  uint32_t temp;
+	  temp = vaddr_read(id_dest->addr,id_dest->width);
+	  p = &temp;
+  }
+  else
+  {
+	  p = &id_dest->val;
+  }
   if(decoding.is_operand_size_16)
   {
          uint32_t datat;
@@ -29,17 +38,14 @@ make_EHelper(pop) {
  p = &temp;
  if(decoding.is_operand_size_16)
  {
-         uint32_t datat;
-	 datat = vaddr_read(cpu.esp,2);
-	 (*p) = datat;
+	 temp = vaddr_read(cpu.esp,2);
 	 cpu.esp = cpu.esp + 2;
-	 rtl_sr(id_dest->reg,2,p);
  }
  else
  {
 	 rtl_pop(p);
-	 rtl_sr(id_dest->reg,4,p);
  }
+ operand_write(id_dest,p);
   print_asm_template1(pop);
 }
 
