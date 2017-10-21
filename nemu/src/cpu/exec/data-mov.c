@@ -18,6 +18,7 @@ make_EHelper(push) {
 	  printf("%x \n",temp);
 
 	  p = &temp;
+	  printf("%x \n",*p);
   }
   else
   {
