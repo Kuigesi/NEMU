@@ -14,6 +14,8 @@ make_EHelper(and) {
   p = &temp;
   p1 = &temp1;
   p2 = &temp2;
+  printf("%x\n",temp1);
+  printf("%x\n",temp2);
   rtl_and(p,p1,p2);
   printf("%d\n",temp);
   operand_write(id_dest,p);
