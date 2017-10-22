@@ -58,7 +58,92 @@ static inline void rtl_div(rtlreg_t* q, rtlreg_t* r, const rtlreg_t* src1_hi, co
 static inline void rtl_idiv(rtlreg_t* q, rtlreg_t* r, const rtlreg_t* src1_hi, const rtlreg_t* src1_lo, const rtlreg_t* src2) {
   asm volatile("idiv %4" : "=a"(*q), "=d"(*r) : "d"(*src1_hi), "a"(*src1_lo), "r"(*src2));
 }
-
+static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
+   int len;
+   len = 8*(4-width);
+   int temp;
+   temp = (*src1);
+   temp = (temp<<len)>>len;
+   (*dest) = temp;
+}
+static inline void rtl_zext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
+   int len;
+   len = 8*(4-width);
+   uint32_t temp;
+   temp = (*src1);
+   temp = (temp<<len)>>len;
+   (*dest) = temp;
+}
+static inline void rtl_set_imul_OFCF(rtlreg_t* dest_hi, rtlreg_t* dest_lo, int width) {
+  cpu.OF = cpu.CF = 1;
+  uint32_t temp1,temp2;
+  int temp;
+  switch (width)
+  {
+     case 1: temp1 = (*dest_lo);
+             temp2 = temp1;
+	     rtl_sext(&temp1,&temp1,1);
+	     rtl_sext(&temp2,&temp2,2);
+	     if(temp1==temp2)
+	     {
+                cpu.OF = cpu.CF = 0;
+	     }
+	     break;
+     case 2: temp1 = (*dest_lo);
+	     temp2 = temp1;
+	     rtl_sext(&temp1,&temp1,2);
+	     if(temp1==temp2)
+	     {
+		cpu.OF = cpu.CF = 0;
+	     }
+	     break;
+     case 4: temp1 = (*dest_lo);
+	    temp2 = (*dest_hi);
+	    temp = temp1;
+	    temp = temp >> 31;
+	    temp1 = temp;
+	    if(temp1==temp2)
+	    {
+	        cpu.OF = cpu.CF = 0;
+	    }
+	    break;
+     default: assert(0);
+	      break;
+  }
+}
+static inline void rtl_set_mul_OFCF(rtlreg_t* dest_hi, rtlreg_t* dest_lo, int width) {
+  uint32_t temp1,temp2;
+  uint32_t temp;
+  cpu.OF = cpu.CF = 1;
+  switch (width)
+  {
+      case 1: temp1 = (*dest_lo);
+	      temp2 = temp1;
+	      rtl_zext(&temp1,&temp1,1);
+	      rtl_zext(&temp2,&temp2,2);
+	      if(temp1==temp2)
+	      {
+                  cpu.OF = cpu.CF = 0;
+	      }
+	      break;
+      case 2: temp1 = (*dest_lo);
+	      temp2 = temp1;
+	      rtl_zext(&temp1,&temp1,2);
+	      if(temp1==temp2)
+	      {
+                 cpu.OF = cpu.CF = 0;
+	      }
+	      break;
+     case 4: temp = (*dest_hi);
+             if(temp==0)
+	     {
+                cpu.OF = cpu.CF = 0;
+	     }
+	     break;
+    default: assert(0);
+	      break; 
+  }
+}
 static inline void rtl_lm(rtlreg_t *dest, const rtlreg_t* addr, int len) {
   *dest = vaddr_read(*addr, len);
 }
@@ -132,22 +217,12 @@ make_rtl_setget_eflags(SF)
 
 static inline void rtl_mv(rtlreg_t* dest, const rtlreg_t *src1) {
   // dest <- src1
-  TODO();
+  (*dest) = (*src1);
 }
 
 static inline void rtl_not(rtlreg_t* dest) {
   // dest <- ~dest
   (*dest) = ~(*dest);
-}
-
-static inline void rtl_sext(rtlreg_t* dest, const rtlreg_t* src1, int width) {
-  // dest <- signext(src1[(width * 8 - 1) .. 0])
-  int len;
-  len = 8*(4-width);
-  int temp;
-  temp = (*src1);
-  temp = (temp<<len)>>len;
-  (*dest) = temp;
 }
 
 static inline void rtl_push(const rtlreg_t* src1) {
