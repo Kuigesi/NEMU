@@ -62,7 +62,20 @@ make_EHelper(popa) {
 }
 
 make_EHelper(leave) {
-  TODO();
+  rtl_lr(&t0,5,4);
+  rtl_sr(4,4,&t0);
+  if(decoding.is_operand_size_16)
+  {
+       t1 = vaddr_read(cpu.esp,2);
+       cpu.esp = cpu.esp + 2;
+       rtl_sr(5,2,&t1);
+  }
+  else
+  {
+       t1 = vaddr_read(cpu.esp,4);
+       cpu.esp = cpu.esp + 4;
+       rtl_sr(5,4,&t1);
+  }
 
   print_asm("leave");
 }

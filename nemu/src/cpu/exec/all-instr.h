@@ -38,6 +38,7 @@ make_EHelper(idiv);
 make_EHelper(neg);
 make_EHelper(cwtl);
 make_EHelper(cltd);
+make_EHelper(leave);
 
 
 make_EHelper(inv);
