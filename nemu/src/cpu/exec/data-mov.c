@@ -45,7 +45,7 @@ make_EHelper(xchg)
         temp = id_src->val;
 	operand_write(id_src,&id_dest->val);
 	operand_write(id_dest,&temp);
-	print_asm("xchg");
+	print_asm_template2("xchg");
         
 }
 
@@ -68,11 +68,20 @@ make_EHelper(leave) {
 }
 
 make_EHelper(cltd) {
+	int temp;
   if (decoding.is_operand_size_16) {
-    TODO();
+    rtl_lr(&t0,0,2);
+    rtl_sext(&t0,&t0,2);
+    t0 = t0 >> 16;
+    rtl_sr(2,2,&t0);
+
   }
   else {
-    TODO();
+    rtl_lr(&t1,0,4);
+    temp = t1;
+     temp =  temp  >> 31;
+   t1 = temp;
+    rtl_sr(2,4,&t1);
   }
 
   print_asm(decoding.is_operand_size_16 ? "cwtl" : "cltd");
