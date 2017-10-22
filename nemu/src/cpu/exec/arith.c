@@ -1,168 +1,7 @@
 #include "cpu/exec.h"
 
-make_EHelper(add) {
-  cpu.OF = 0;
-  cpu.CF = 0;
-  int temp,temp1,temp2;
-  unsigned int tempu,tempu1,tempu2;
-  unsigned long long  templu,templu1,templu2,templur;
-  long long templ,templ1,templ2,templr;
-  uint32_t *p;
-  temp1 = id_src->val;
-  temp2 = id_dest->val;
-  tempu1 = id_src->val;
-  tempu2 = id_dest->val;
-  temp = id_src->val + id_dest->val;
-  tempu = temp;
-  p = &tempu;
-  operand_write(id_dest,p);
-  rtl_update_ZFSF(p,id_dest->width);
-  templ1 = temp1;
-  templ2 = temp2;
-  templ = templ1 + templ2;
-  templr = temp;
-  if(templr!=templ)
-  {
-     cpu.OF = 1;
-  }
-  templu1 = tempu1;
-  templu2 = tempu2;
-  templu = templu1 + templu2;
-  templur = tempu;
-  if(templur!=templu)
-  {
-     cpu.CF = 1;
-  }
-  print_asm_template2(add);
-}
 
-make_EHelper(sub) {
- cpu.OF = 0;
- cpu.CF = 0;
- int temp,temp1,temp2;
- unsigned int tempu,tempu1,tempu2;
- long long templ,templ1,templ2,templr;
- uint32_t *p;
- temp1 = id_src->val;
- temp2 = id_dest->val;
- tempu1 = id_src->val;
- tempu2 = id_dest->val;
- temp = id_dest->val - id_src->val;
- tempu = temp;
- p = &tempu;
- operand_write(id_dest,p);
- rtl_update_ZFSF(p,id_dest->width);
- templ1 = temp1;
- templ2 = temp2;
- templ = templ2 - templ1;
- templr = temp;
- if(templr!=templ)
- {
-	cpu.OF = 1;
- } 
- if(tempu2<tempu1)
- {
-	 cpu.CF = 1;
- } 
-  print_asm_template2(sub);
-}
 
-make_EHelper(cmp) {
-  cpu.OF = 0;
-  cpu.CF = 0;
-  int temp,temp1,temp2;
-  unsigned int tempu,tempu1,tempu2;
-  long long templ,templ1,templ2,templr;
-  uint32_t *p;
-  temp1 = id_src->val;
-  temp2 = id_dest->val;
-  tempu1 = id_src->val;
-  tempu2 = id_dest->val;
-  temp = id_dest->val - id_src->val;
-  tempu = temp;
-  p = &tempu;
-  rtl_update_ZFSF(p,id_dest->width);
-  templ1 = temp1;
-  templ2 = temp2;
-  templ = templ2 - templ1;
-  templr = temp;
-  if(templr!=templ)
-  {
-	cpu.OF = 1;
-  } 
-  if(tempu2<tempu1)
-  {
-	cpu.CF = 1;
-  }  
-  print_asm_template2(cmp);
-}
-
-make_EHelper(inc) {
-  cpu.OF = 0;
-  cpu.CF = 0;
-  int temp,temp1,temp2;
-  unsigned int tempu,tempu1,tempu2;
-  unsigned long long templu,templu1,templu2,templur;
-  long long templ,templ1,templ2,templr;
-  uint32_t *p;
-  temp1 = 1;
-  temp2 = id_dest->val;
-  tempu1 = 1;
-  tempu2 = id_dest->val; 
-  temp = temp2 + temp1;
-  tempu = temp;
-  p = &tempu;
-  operand_write(id_dest,p);
-  rtl_update_ZFSF(p,id_dest->width);
-  templ1 = temp1;
-  templ2 = temp2;
-  templ = templ2 + templ1;
-  templr = temp;
-  if(templr!=templ) 
-  { 
-	   cpu.OF = 1;
-  }
-  templu1 = tempu1;
-  templu2 = tempu2;
-  templu = templu1 + templu2;
-  templur = tempu;
-  if(templur!=templu)
-  {
-	  cpu.CF = 1;
-  }
-  print_asm_template1(inc);
-}
-
-make_EHelper(dec) {
-  cpu.OF = 0;
-  cpu.CF = 0;
-  int temp,temp1,temp2;
-  unsigned int tempu,tempu1,tempu2;
-  long long templ,templ1,templ2,templr;
-  uint32_t *p;
-  temp1 = 1;
-  temp2 = id_dest->val;
-  tempu1 = 1;
-  tempu2 = id_dest->val;
-  temp = temp2 - temp1;
-  tempu = temp;
-  p = &tempu;
-  operand_write(id_dest,p);
-  rtl_update_ZFSF(p,id_dest->width);
-  templ1 = temp1;
-  templ2 = temp2;
-  templ = templ2 - templ1;
-  templr = temp;
-  if(templr!=templ)
-  {
-     cpu.OF = 1;
-  }
-  if(tempu2<tempu1)
-  {
-     cpu.CF = 1;
-  }
-  print_asm_template1(dec);
-}
 
 make_EHelper(neg) {
   TODO();
@@ -190,7 +29,39 @@ make_EHelper(adc) {
 
   print_asm_template2(adc);
 }
+make_EHelper(add) {
+ rtl_add(&t2, &id_dest->val, &id_src->val);
+ operand_write(id_dest, &t2);
+ rtl_update_ZFSF(&t2, id_dest->width);
+ rtl_sltu(&t0, &t2, &id_dest->val);
+ rtl_set_CF(&t0);
 
+ rtl_xor(&t0, &id_dest->val, &id_src->val);
+ rtl_not(&t0);
+ rtl_xor(&t1, &id_dest->val, &t2);
+ rtl_and(&t0, &t0, &t1);
+ rtl_msb(&t0, &t0, id_dest->width);
+ rtl_set_OF(&t0);
+
+ print_asm_template2(add);
+}
+make_EHelper(inc){
+ id_src->val = 1;
+ rtl_add(&t2, &id_dest->val, &id_src->val);
+ operand_write(id_dest, &t2);
+ rtl_update_ZFSF(&t2, id_dest->width);
+ rtl_sltu(&t0, &t2, &id_dest->val);
+ rtl_set_CF(&t0);
+
+ rtl_xor(&t0, &id_dest->val, &id_src->val);
+ rtl_not(&t0);
+ rtl_xor(&t1, &id_dest->val, &t2);
+ rtl_and(&t0, &t0, &t1);
+ rtl_msb(&t0, &t0, id_dest->width);
+ rtl_set_OF(&t0);
+
+ print_asm_template1(inc);
+}
 make_EHelper(sbb) {
   rtl_sub(&t2, &id_dest->val, &id_src->val);
   rtl_get_CF(&t1);
@@ -210,7 +81,58 @@ make_EHelper(sbb) {
 
   print_asm_template2(sbb);
 }
+make_EHelper(sub){
+ rtl_sub(&t2, &id_dest->val, &id_src->val);
+ operand_write(id_dest, &t2);
 
+ rtl_update_ZFSF(&t2, id_dest->width);
+ 
+ rtl_sltu(&t0, &id_dest->val, &t2);
+ rtl_set_CF(&t0);
+
+ rtl_xor(&t0, &id_dest->val, &id_src->val);
+ rtl_xor(&t1, &id_dest->val, &t2);
+ rtl_and(&t0, &t0, &t1);
+ rtl_msb(&t0, &t0, id_dest->width);
+ rtl_set_OF(&t0);
+
+ print_asm_template2(sub);
+}
+make_EHelper(dec) {
+ id_src->val = 1;
+ rtl_sub(&t2, &id_dest->val, &id_src->val);
+ operand_write(id_dest, &t2);
+
+ rtl_update_ZFSF(&t2, id_dest->width);
+
+ rtl_sltu(&t0, &id_dest->val, &t2);
+ rtl_set_CF(&t0);
+
+ rtl_xor(&t0, &id_dest->val, &id_src->val);
+ rtl_xor(&t1, &id_dest->val, &t2);
+ rtl_and(&t0, &t0, &t1);
+ rtl_msb(&t0, &t0, id_dest->width);
+ rtl_set_OF(&t0);
+
+ print_asm_template1(dec);
+}	
+make_EHelper(cmp){
+ rtl_sub(&t2, &id_dest->val, &id_src->val);
+ operand_write(id_dest, &t2);
+
+ rtl_update_ZFSF(&t2, id_dest->width);
+
+ rtl_sltu(&t0, &id_dest->val, &t2);
+ rtl_set_CF(&t0);
+
+ rtl_xor(&t0, &id_dest->val, &id_src->val);
+ rtl_xor(&t1, &id_dest->val, &t2);
+ rtl_and(&t0, &t0, &t1);
+ rtl_msb(&t0, &t0, id_dest->width);
+ rtl_set_OF(&t0);
+ 
+ print_asm_template2(cmp);
+}           
 make_EHelper(mul) {
   rtl_lr(&t0, R_EAX, id_dest->width);
   rtl_mul(&t0, &t1, &id_dest->val, &t0);
