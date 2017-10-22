@@ -116,7 +116,6 @@ make_EHelper(setcc) {
 make_EHelper(not) {
   uint32_t temp;
   uint32_t *p;
-  printf("66666666666\n");
   p = &temp;
   temp = id_dest->val;
   rtl_not(p);
