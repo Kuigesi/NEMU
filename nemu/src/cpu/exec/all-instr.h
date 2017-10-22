@@ -28,6 +28,14 @@ make_EHelper(jcc);
 make_EHelper(jmp);
 make_EHelper(adc);
 make_EHelper(sbb);
+make_EHelper(mul);
+make_EHelper(imul1);
+make_EHelper(imul2);
+make_EHelper(imul3);
+make_EHelper(div);
+make_EHelper(idiv); 
+make_EHelper(neg);
+
 
 make_EHelper(inv);
 make_EHelper(nemu_trap);

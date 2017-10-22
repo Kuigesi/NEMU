@@ -135,7 +135,7 @@ make_EHelper(cmp){
 make_EHelper(mul) {
   rtl_lr(&t0, R_EAX, id_dest->width);
   rtl_mul(&t0, &t1, &id_dest->val, &t0);
-
+  rtl_set_mul_OFCF(&t0,&t1,id_dest->width);
   switch (id_dest->width) {
     case 1:
       rtl_sr_w(R_AX, &t1);
@@ -151,7 +151,7 @@ make_EHelper(mul) {
       break;
     default: assert(0);
   }
-
+  
   print_asm_template1(mul);
 }
 
@@ -159,7 +159,7 @@ make_EHelper(mul) {
 make_EHelper(imul1) {
   rtl_lr(&t0, R_EAX, id_dest->width);
   rtl_imul(&t0, &t1, &id_dest->val, &t0);
-
+  rtl_set_imul_OFCF(&t0,&t1,id_dest->width);
   switch (id_dest->width) {
     case 1:
       rtl_sr_w(R_AX, &t1);
@@ -185,8 +185,9 @@ make_EHelper(imul2) {
   rtl_sext(&id_dest->val, &id_dest->val, id_dest->width);
 
   rtl_imul(&t0, &t1, &id_dest->val, &id_src->val);
+  rtl_set_imul_OFCF(&t0,&t1,id_dest->width);
   operand_write(id_dest, &t1);
-
+  
   print_asm_template2(imul);
 }
 
@@ -197,8 +198,9 @@ make_EHelper(imul3) {
   rtl_sext(&id_dest->val, &id_dest->val, id_dest->width);
 
   rtl_imul(&t0, &t1, &id_src2->val, &id_src->val);
+  rtl_set_imul_OFCF(&t0,&t1,id_dest->width); 
   operand_write(id_dest, &t1);
-
+ 
   print_asm_template3(imul);
 }
 
