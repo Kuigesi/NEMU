@@ -118,7 +118,6 @@ make_EHelper(dec) {
 }	
 make_EHelper(cmp){
  rtl_sub(&t2, &id_dest->val, &id_src->val);
- operand_write(id_dest, &t2);
 
  rtl_update_ZFSF(&t2, id_dest->width);
 
