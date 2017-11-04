@@ -149,43 +149,51 @@ void difftest_step(uint32_t eip) {
   if(r.eax!=cpu.eax)
   {
 	  diff = true;
-	  printf("Qemu eax: %d  Nemu eax: %d\n",r.eax,cpu.eax); 
+	  printf("Qemu eax: %d  Nemu eax: %d\n ",r.eax,cpu.eax); 
+          printf("Qemu eip: %d  Nemu eip: %d\n",r.eip,cpu.eip);
 
   }
   if(r.ecx!=cpu.ecx)
   {
 	  diff = true;
 	  printf("Qemu ecx: %d  Nemu ecx: %d\n",r.ecx,cpu.ecx);
+	  printf("Qemu eip: %d  Nemu eip: %d\n",r.eip,cpu.eip);
   }
   if(r.edx!=cpu.edx)
   {
           diff = true;
 	  printf("Qemu edx: %d  Nemu edx: %d\n",r.edx,cpu.edx);
+	  printf("Qemu eip: %d  Nemu eip: %d\n",r.eip,cpu.eip);
   }
   if(r.ebx!=cpu.ebx)
   {
 	  diff = true;
 	  printf("Qemu ebx: %d  Nemu ebx: %d\n",r.ebx,cpu.ebx);
+	  printf("Qemu eip: %d  Nemu eip: %d\n",r.eip,cpu.eip);
   }
   if(r.esp!=cpu.esp)
   {
 	  diff = true;
 	  printf("Qemu esp: %d  Nemu esp: %d\n",r.esp,cpu.esp);
+	  printf("Qemu eip: %d  Nemu eip: %d\n",r.eip,cpu.eip);
   }
   if(r.ebp!=cpu.ebp)
   {
 	  diff = true;
 	  printf("Qemu ebp: %d  Nemu ebp: %d\n",r.ebp,cpu.ebp);
+	  printf("Qemu eip: %d  Nemu eip: %d\n",r.eip,cpu.eip);
   }
   if(r.esi!=cpu.esi)
   {
           diff = true;
 	  printf("Qemu esi: %d  Nemu esi: %d\n",r.esi,cpu.esi);
+	  printf("Qemu eip: %d  Nemu eip: %d\n",r.eip,cpu.eip);
   }
   if(r.edi!=cpu.edi)
   {
 	  diff = true;
           printf("Qemu edi: %d  Nemu edi: %d\n",r.edi,cpu.edi);
+	  printf("Qemu eip: %d  Nemu eip: %d\n",r.eip,cpu.eip);
   }
   if(r.eip!=cpu.eip)
   {
