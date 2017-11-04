@@ -68,6 +68,7 @@ make_EHelper(sar) {
   p = &temp;
   p1 = &temp1;
   p2 = &temp2;
+  rtl_sext(p1,p1,id_dest->width);
   rtl_sar(p,p1,p2);
   operand_write(id_dest,p);
   rtl_update_ZFSF(p,id_dest->width);
@@ -89,6 +90,22 @@ make_EHelper(shl) {
 
   print_asm_template2(shl);
 }
+make_EHelper(rol) {
+ uint32_t temp1,temp2;
+ uint32_t *p1;
+ temp1 = id_dest->val;
+ temp2 = id_src->val;
+ p1 = &temp1;
+ while(temp2!=0)
+ {
+     rtl_msb(&t0,p1,id_dest->width);
+     temp1 = temp1 << 1;
+     temp1 = temp1 + t0;
+     temp2 = temp2 -1;
+ }
+ operand_write(id_dest,p1);
+ print_asm_template2(rol);
+}
 
 make_EHelper(shr) {
   // unnecessary to update CF and OF in NEMU
@@ -104,7 +121,23 @@ make_EHelper(shr) {
   rtl_update_ZFSF(p,id_dest->width);
   print_asm_template2(shr);
 }
-
+make_EHelper(ror) {
+  uint32_t temp1,temp2;
+  uint32_t *p1;
+  temp1 = id_dest->val;
+  temp2 = id_src->val;
+  p1 = &temp1;
+  while(temp2!=0)
+  {
+   t0 = temp1&0x1;
+   temp1 = temp1 >> 1;
+   t0 = t0<<(8*id_dest->width - 1);
+   temp1 = temp1 + t0;
+   temp2 = temp2 -1;
+  }
+  operand_write(id_dest,p1);
+  print_asm_template2(ror);
+}
 make_EHelper(setcc) {
   uint8_t subcode = decoding.opcode & 0xf;
   rtl_setcc(&t2, subcode);
