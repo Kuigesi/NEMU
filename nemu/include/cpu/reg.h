@@ -50,7 +50,12 @@ typedef union{
    uint8_t    :8;   
     };
     };
-
+   struct {
+   uint32_t BASE :32;
+   uint32_t LIMIT :16;
+   uint32_t      :16;   
+   } IDTR;
+   rtlreg_t CS;
   };
 } CPU_state;
 
