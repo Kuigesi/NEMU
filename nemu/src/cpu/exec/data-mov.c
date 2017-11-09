@@ -53,6 +53,47 @@ else
 }
 print_asm("pusha");
 }
+make_EHelper(popa) {
+uint32_t a[8];
+uint32_t *ptr[8];
+int i;
+for ( i=0;i<8;i++)
+{
+	ptr[i] = &(a[i]);
+}
+
+if(decoding.is_operand_size_16)
+{
+       for ( i=7;i>=0;i--)
+       {
+	       if(i!=4)
+	       {
+		       rtl_pop_16(ptr[i]);
+		       rtl_sr(i,2,ptr[i]);
+	       }
+               else
+	       {
+		       rtl_pop_16(ptr[i]);
+	       }
+       }
+}
+else
+{
+       for ( i=7;i>=0;i--)
+       {
+	       if(i!=4)
+	       {
+		       rtl_pop(ptr[i]);
+		       rtl_sr(i,4,ptr[i]);
+	       }
+	       else
+	       {
+		       rtl_pop(ptr[i]);
+	       }
+       }
+}
+print_asm("popa");
+}
 make_EHelper(pop) {
  
  uint32_t temp;
@@ -78,12 +119,6 @@ make_EHelper(xchg)
 	operand_write(id_dest,&temp);
 	print_asm_template2("xchg");
         
-}
-
-make_EHelper(popa) {
-  TODO();
-
-  print_asm("popa");
 }
 
 make_EHelper(leave) {
