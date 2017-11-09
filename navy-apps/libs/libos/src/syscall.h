@@ -2,6 +2,7 @@
 #define __SYSCALL_H__
 
 enum {
+
   SYS_none,
   SYS_open,
   SYS_read,
@@ -23,5 +24,6 @@ enum {
   SYS_times,
   SYS_gettimeofday
 };
-
+int sys_none();
+void sys_exit(uintptr_t);
 #endif
