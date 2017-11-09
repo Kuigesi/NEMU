@@ -233,7 +233,12 @@ static inline void rtl_push(const rtlreg_t* src1) {
           datat  = (*src1);
           vaddr_write(cpu.esp,4,datat);
 }
-
+static inline void rtl_push_16(const rtlreg_t* src1) {
+  uint32_t datat;
+          cpu.esp = cpu.esp -2;
+	  datat  = (*src1);
+	  vaddr_write(cpu.esp,2,datat);
+}
 static inline void rtl_pop(rtlreg_t* dest) {
   // dest <- M[esp]
   // esp <- esp + 4
@@ -242,7 +247,13 @@ static inline void rtl_pop(rtlreg_t* dest) {
 	  (*dest) = datat;
 	  cpu.esp = cpu.esp +4;
 }
-
+static inline void rtl_pop_16(rtlreg_t* dest) {
+  uint32_t datat;
+         datat = vaddr_read(cpu.esp,2);
+	 (*dest) = datat;
+	 cpu.esp = cpu.esp +2;
+         
+}
 static inline void rtl_eq0(rtlreg_t* dest, const rtlreg_t* src1) {
   // dest <- (src1 == 0 ? 1 : 0)
   (*dest) = ((*src1) == 0 ? 1 : 0);

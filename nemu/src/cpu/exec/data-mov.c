@@ -21,7 +21,38 @@ make_EHelper(push) {
   }
   print_asm_template1(push);
 }
-
+make_EHelper(pusha) {
+uint32_t a[8];
+uint32_t *ptr[8];
+int i;
+for ( i=0;i<8;i++)
+{
+	ptr[i] = &(a[i]);
+}
+	a[0] = cpu.eax;
+	a[1] = cpu.ecx;
+	a[2] = cpu.edx;
+	a[3] = cpu.ebx;
+	a[4] = vaddr_read(cpu.esp,4);
+	a[5] = cpu.ebp;
+	a[6] = cpu.esi;
+	a[7] = cpu.edi;
+if(decoding.is_operand_size_16)
+{
+	for ( i=0;i<8;i++)
+	{
+		rtl_push_16(ptr[i]);
+	}
+}
+else
+{
+        for ( i=0;i<8;i++)
+	{
+		rtl_push(ptr[i]);
+	}
+}
+print_asm("pusha");
+}
 make_EHelper(pop) {
  
  uint32_t temp;
@@ -47,12 +78,6 @@ make_EHelper(xchg)
 	operand_write(id_dest,&temp);
 	print_asm_template2("xchg");
         
-}
-
-make_EHelper(pusha) {
-  TODO();
-
-  print_asm("pusha");
 }
 
 make_EHelper(popa) {
