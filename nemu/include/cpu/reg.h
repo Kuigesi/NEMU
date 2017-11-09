@@ -52,8 +52,7 @@ typedef union{
     };
    struct {
    uint32_t BASE :32;
-   uint32_t LIMIT :16;
-   uint32_t      :16;   
+   uint32_t LIMIT :32; 
    } IDTR;
    rtlreg_t CS;
   };

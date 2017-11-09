@@ -44,6 +44,8 @@ make_EHelper(cltd);
 make_EHelper(leave);
 make_EHelper(in);
 make_EHelper(out);
+make_EHelper(int);
+make_EHelper(lidt);
 
 make_EHelper(inv);
 make_EHelper(nemu_trap);
