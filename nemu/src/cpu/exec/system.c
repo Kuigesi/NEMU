@@ -35,6 +35,7 @@ make_EHelper(int) {
   uint8_t NO;
   NO = id_dest->val; 
   raise_intr(NO,t2);
+  printf("\n ID = %d \n",NO);
   print_asm("int %s", id_dest->str);
 
 #ifdef DIFF_TEST
