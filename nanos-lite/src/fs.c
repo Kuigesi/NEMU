@@ -24,6 +24,11 @@ static Finfo file_table[] __attribute__((used)) = {
 
 void init_fs() {
   // TODO: initialize the size of /dev/fb
+  int i,j;
+  i = _screen.width;
+  j = _screen.height;
+  file_table[FD_FB].size = i*j*4;
+  file_table[FD_FB].disk_offset = file_table[FD_FB].open_offset = 0;
 }
 int fs_open(const char *pathname,int flags,int mode)
 {
@@ -63,20 +68,41 @@ int fs_open(const char *pathname,int flags,int mode)
 ssize_t fs_read(int fd,void *buf,size_t len)
 {
    //off_t addr;
+   //Log("len = %d\n",len);
    off_t offset_t;
    off_t offset_limit;
    offset_t = file_table[fd].disk_offset + file_table[fd].open_offset;
    offset_limit = file_table[fd].disk_offset + file_table[fd].size;
    //addr = offset_t + (off_t)(&ramdisk_start)+ len ;
    //printf("addr = %x\n",addr);
+   if(fd == FD_EVENTS)
+   {
+      return events_read(buf,len);
+      assert(0);
+   }
    if((offset_t + len) <= offset_limit)
    {
-       ramdisk_read(buf,offset_t,len);
+       if(fd == FD_DISPINFO)
+       {
+	 dispinfo_read(buf,offset_t,len);
+       }
+       else
+       {
+	 ramdisk_read(buf,offset_t,len);
+       }
    }
    else
    {
        len = offset_limit - offset_t;
-       ramdisk_read(buf,offset_t,len);
+
+       if(fd == FD_DISPINFO)
+       {
+	 dispinfo_read(buf,offset_t,len);
+       }
+       else
+       { 
+	 ramdisk_read(buf,offset_t,len);
+       }
    }
    //printf("addr = %x len = %d\n",addr,len);
   // printf("&n = %p\n",buf);
@@ -86,27 +112,47 @@ ssize_t fs_read(int fd,void *buf,size_t len)
 ssize_t fs_write(int fd,const void *buf,size_t len)
 {
    //off_t addr;
-   
+   //Log("len = %d\n",len);   
    off_t offset_t;
    off_t offset_limit;
+   
    offset_t = file_table[fd].disk_offset + file_table[fd].open_offset;
    offset_limit = file_table[fd].disk_offset + file_table[fd].size;
+   //Log("offset_t = %d\n",offset_t);
+   //Log("offset_limitt = %d\n",offset_limit);
    //addr = offset_t + (off_t)(&ramdisk_start)+ len ;
    //printf("addr = %x\n",addr);
    if((offset_t + len) <= offset_limit)
    {
-       ramdisk_write(buf,offset_t,len);
+       if(fd == FD_FB)
+       { 
+	 fb_write(buf,offset_t,len);	 
+       }
+       else
+       {
+	 ramdisk_write(buf,offset_t,len);
+       }
    }
    else
    {
        len = offset_limit - offset_t;
-       ramdisk_write(buf,offset_t,len);
+       if(fd == FD_FB)
+       {
+	 fb_write(buf,offset_t,len);
+       }
+       else
+       {
+         ramdisk_write(buf,offset_t,len);
+       }
    }
    file_table[fd].open_offset = file_table[fd].open_offset + len;
    return len;
 }
 off_t fs_lseek(int fd,off_t offset,int whence)
 {
+
+
+     //assert(fd!=FD_FB);
      switch(whence)
      {
       case  SEEK_SET : if(offset <= file_table[fd].size)
