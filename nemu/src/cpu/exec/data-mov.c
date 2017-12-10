@@ -4,6 +4,23 @@ make_EHelper(mov) {
   operand_write(id_dest, &id_src->val);
   print_asm_template2(mov);
 }
+make_EHelper(movCR) {
+ switch(id_src->reg)
+ {
+	 case 0: id_src->val = cpu.cr0.val;break;
+	 case 3: id_src->val = cpu.cr3.val;break;
+	 default:assert(0);
+ }
+ operand_write(id_dest, &id_src->val);
+}
+make_EHelper(movRC) {
+ switch(id_dest->reg)
+ {
+	 case 0: cpu.cr0.val = id_src->val;break;
+	 case 3: cpu.cr3.val = id_src->val;break;
+	 default:assert(0);
+ }
+}
 
 make_EHelper(push) {
   uint32_t *p;
