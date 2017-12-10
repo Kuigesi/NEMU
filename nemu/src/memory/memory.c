@@ -78,6 +78,7 @@ paddr_t page_translate (vaddr_t addr,int w)
     printf("good\n");
     uintptr_t tp0,tp1,tpbase0,tpbase1,tpaddr0,tpaddr1,addr_t;
     addr_t = (uintptr_t)addr;
+    printf("addr = %lx \n",(uintptr_t)addr_t);
     tp0 = addr_t>>22;
     tp1 = ((addr_t<<42)>>42)>>12;
     printf("good\n");
@@ -116,7 +117,7 @@ paddr_t page_translate (vaddr_t addr,int w)
     uint32_t pa_tt;
     pa_tt =  pte_t->page_frame;
     pa_tt = pa_tt <<12;
-    pa_tt = pa_tt + (addr_t&0x3ff);
+    pa_tt = pa_tt + (addr_t&0xfff);
     return (paddr_t)pa_tt;
     
 }
