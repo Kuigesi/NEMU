@@ -75,6 +75,7 @@ paddr_t page_translate (vaddr_t addr,int w)
     {
 	    return addr;
     }
+    printf("good\n");
     uintptr_t tp0,tp1,tpbase0,tpbase1,tpaddr0,tpaddr1,addr_t;
     addr_t = (uintptr_t)addr;
     tp0 = addr_t>>22;
