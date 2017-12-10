@@ -82,6 +82,7 @@ paddr_t page_translate (vaddr_t addr,int w)
     tp1 = ((addr_t<<42)>>42)>>12;
     printf("good\n");
     tpbase0 = cpu.cr3.page_directory_base;
+    printf("cr3 = %lx \n",(uintptr_t)tpbase0);
     printf("good\n");
     tpbase0 = tpbase0<<12;
     tpaddr0 = tpbase0 + (tp0<<2);
