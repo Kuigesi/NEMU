@@ -91,6 +91,7 @@ paddr_t page_translate (vaddr_t addr,int w)
     printf("pde_t = %lx \n",(uintptr_t)pde_t);
     if(pde_t->present!=1)
     {
+	printf("pde_t = %lx \n",(uintptr_t)pde_t);
         assert(0);
     }
     printf("good\n");
