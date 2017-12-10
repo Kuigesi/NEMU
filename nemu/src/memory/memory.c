@@ -60,6 +60,7 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
 	tp = tp + (uint32_t)len -1;
 	if(tp>0x3ff)
 	{
+		printf("addr = %x len =%x\n",addr,len);
 		assert(0);
 	}
 	else
