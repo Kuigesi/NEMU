@@ -43,7 +43,7 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 	uint32_t tp;
 	tp = (addr<<20)>>20;
 	tp = tp + (uint32_t)len -1;
-	if((tp>0x3ff)&&(cpu.cr0.paging==1))
+	if((tp>0xfff)&&(cpu.cr0.paging==1))
 	{
 		assert(0);
 	}
@@ -58,7 +58,7 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
 	uint32_t tp;
 	tp = (addr<<20)>>20;
 	tp = tp + (uint32_t)len -1;
-	if((tp>0x3ff)&&(cpu.cr0.paging==1))
+	if((tp>0xfff)&&(cpu.cr0.paging==1))
 	{
 		printf("addr = %x len =%x\n",addr,len);
 		assert(0);
@@ -91,28 +91,28 @@ paddr_t page_translate (vaddr_t addr,int w)
     pde_t = (PDE*)tpaddr0;
     printf("good\n");
     printf("pde_t = %lx \n",(uintptr_t)pde_t);
-    if(pde_t->present!=1)
+    if(pde_t[0].present!=1)
     {
 	printf("pde_t = %lx \n",(uintptr_t)pde_t);
         assert(0);
     }
     printf("good\n");
     printf("pde_t = %lx \n",(uintptr_t)pde_t);
-    pde_t->accessed = 1;
+    pde_t[0].accessed = 1;
     tpbase1 = pde_t->page_frame;
     tpbase1 = tpbase1<<12;
     tpaddr1 = tpbase1 + (tp1<<2);
     PTE* pte_t;
     pte_t = (PTE*)tpaddr1;
-    if(pte_t->present!=1)
+    if(pte_t[0].present!=1)
     {
         assert(0);
     }
     printf("pte_t = %lx \n",(uintptr_t)pte_t);
-    pte_t->accessed = 1;
+    pte_t[0].accessed = 1;
     if(w==1)
     {
-        pte_t->dirty = 1;
+        pte_t[0].dirty = 1;
     }
     uint32_t pa_tt;
     pa_tt =  pte_t->page_frame;
