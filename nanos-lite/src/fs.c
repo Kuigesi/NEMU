@@ -8,7 +8,6 @@ typedef struct {
 } Finfo;
 
 enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB, FD_EVENTS, FD_DISPINFO, FD_NORMAL};
-
 /* This is the information about all files in disk. */
 static Finfo file_table[] __attribute__((used)) = {
   {"stdin (note that this is not the actual stdin)", 0, 0},
@@ -32,7 +31,6 @@ void init_fs() {
 }
 int fs_open(const char *pathname,int flags,int mode)
 {
-	
 	const char* name_t;
 	char* name_p;
 	int test;
@@ -55,10 +53,11 @@ int fs_open(const char *pathname,int flags,int mode)
 		if(test ==1)
 		{
 			//printf("fd = %d\n",i);
+			file_table[i].open_offset = 0;
 			return i;
 		}
 	}
-	
+        	
 	//off_t addr;
 	//addr = (off_t)(&ramdisk_start);
         //printf("addr = %x\n",addr);
@@ -77,6 +76,7 @@ ssize_t fs_read(int fd,void *buf,size_t len)
    //printf("addr = %x\n",addr);
    if(fd == FD_EVENTS)
    {
+       //Log("read dispinfo\n");
       return events_read(buf,len);
       assert(0);
    }
@@ -153,6 +153,10 @@ off_t fs_lseek(int fd,off_t offset,int whence)
 
 
      //assert(fd!=FD_FB);
+     if(fd==17)
+     {
+	     Log("1.rpg lseek\n");
+     }
      switch(whence)
      {
       case  SEEK_SET : if(offset <= file_table[fd].size)

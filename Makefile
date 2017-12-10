@@ -6,7 +6,7 @@ defalut:
 clean:
 	-$(MAKE) -C nemu clean
 	-$(MAKE) -C nexus-am clean
-	-$(MAKE) -C nanos-lite cleanKE)
+	-$(MAKE) -C nanos-lite clean
 	-$(MAKE) -C navy-apps clean
 
 submit: clean

@@ -60,6 +60,7 @@ PAL_InitGlobals(
       if (gpGlobals == NULL)
       {
          return -1;
+	 assert(0);
       }
    }
 
@@ -363,16 +364,22 @@ PAL_LoadGame(
    // Try to open the specified file
    //
    fp = fopen(szFileName, "rb");
+   printf("file = %s\n",szFileName);
    if (fp == NULL)
    {
       return -1;
+      assert(0);
    }
+   printf("file = %s\n",szFileName);
 
    //
    // Read all data from the file and close.
    //
    fread(&s, sizeof(SAVEDGAME), 1, fp);
+   printf("file = %s\n",szFileName);
+   printf("size = %d\n",sizeof(SAVEDGAME));
    fclose(fp);
+   printf("file = %s\n",szFileName);
 
    //
    // Adjust endianness
@@ -424,6 +431,7 @@ PAL_LoadGame(
    //
    // Success
    //
+   printf("good\n");
    return 0;
 }
 
