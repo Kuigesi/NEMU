@@ -92,6 +92,7 @@ paddr_t page_translate (vaddr_t addr,int w)
     {
         assert(0);
     }
+    printf("good\n");
     printf("pde_t = %lx \n",(uintptr_t)pde_t);
     pde_t->accessed = 1;
     tpbase1 = pde_t->page_frame;
