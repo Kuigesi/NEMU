@@ -43,7 +43,7 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 	uint32_t tp;
 	tp = (addr<<20)>>20;
 	tp = tp + (uint32_t)len -1;
-	if(tp>0x3ff)
+	if((tp>0x3ff)&&(cpu.cr0.paging==1))
 	{
 		assert(0);
 	}
@@ -58,7 +58,7 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
 	uint32_t tp;
 	tp = (addr<<20)>>20;
 	tp = tp + (uint32_t)len -1;
-	if(tp>0x3ff)
+	if((tp>0x3ff)&&(cpu.cr0.paging==1))
 	{
 		printf("addr = %x len =%x\n",addr,len);
 		assert(0);
