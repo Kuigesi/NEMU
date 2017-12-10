@@ -55,6 +55,31 @@ typedef union{
    uint32_t LIMIT :32; 
    } IDTR;
    rtlreg_t CS;
+   union
+   {
+     struct
+     {
+	     uint32_t protect_enable    :1;
+	     uint32_t dont_care         :30;
+	     uint32_t paging            :1;
+     };
+     uint32_t val;
+
+   } cr0;
+   union
+   {
+     struct
+     {
+	     uint32_t pad0              :3;
+	     uint32_t page_write_through :1;
+	     uint32_t page_cache_disable :1;
+	     uint32_t pad1              :7;
+	     uint32_t page_directory_base :20;
+
+     };
+     uint32_t val;
+   } cr3;
+
   };
 } CPU_state;
 
