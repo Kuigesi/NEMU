@@ -87,6 +87,7 @@ paddr_t page_translate (vaddr_t addr,int w)
     tpaddr0 = tpbase0 + (tp0<<2);
     PDE* pde_t;
     pde_t = (PDE*)tpaddr0;
+    printf("good\n");
     if(pde_t->present!=1)
     {
         assert(0);
