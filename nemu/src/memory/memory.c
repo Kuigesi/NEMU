@@ -78,7 +78,7 @@ paddr_t page_translate (vaddr_t addr,int w)
     uintptr_t tp0,tp1,tpbase0,tpbase1,tpaddr0,tpaddr1,addr_t;
     addr_t = (uintptr_t)addr;
     tp0 = addr_t>>22;
-    tp1 = ((addr_t<<10)>>10)>>12;
+    tp1 = ((addr_t<<42)>>42)>>12;
     tpbase0 = cpu.cr3.page_directory_base;
     tpbase0 = tpbase0<<12;
     tpaddr0 = tpbase0 + (tp0<<2);
@@ -88,6 +88,7 @@ paddr_t page_translate (vaddr_t addr,int w)
     {
         assert(0);
     }
+    printf("pde_t = %lx \n",(uintptr_t)pde_t);
     pde_t->accessed = 1;
     tpbase1 = pde_t->page_frame;
     tpbase1 = tpbase1<<12;
@@ -98,6 +99,7 @@ paddr_t page_translate (vaddr_t addr,int w)
     {
         assert(0);
     }
+    printf("pte_t = %lx \n",(uintptr_t)pte_t);
     pte_t->accessed = 1;
     if(w==1)
     {
