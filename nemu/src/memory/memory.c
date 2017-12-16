@@ -45,7 +45,7 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 	tp = tp + (uint32_t)len -1;
 	if(tp>0xfff)
 	{
-		printf("addr = %x len = %d\n",addr,len);
+		//printf("addr = %x len = %d\n",addr,len);
 	}
                paddr_t pa_tt = page_translate (addr,0);
 	       return paddr_read(pa_tt, len);
@@ -57,7 +57,7 @@ void vaddr_write(vaddr_t addr, int len, uint32_t data) {
 	tp = tp + (uint32_t)len -1;
 	if(tp>0xfff)
 	{
-		printf("addr = %x len = %d\n",addr,len);
+		//printf("addr = %x len = %d\n",addr,len);
 	}
 		paddr_t pa_tt = page_translate (addr,1);
 		paddr_write(pa_tt, len, data);
