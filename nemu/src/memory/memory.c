@@ -77,9 +77,9 @@ paddr_t page_translate (vaddr_t addr,int w)
     tpaddr0 = tpbase0 + (tp0<<2);
     PDE pde_t;
     pde_t = (PDE)paddr_read(tpaddr0,4);
-    //uint32_t tt;
-    //tt = paddr_read(tpaddr0,4);
-    //printf("addr = %x pde_t = %x \n",tpaddr0,tt);
+    uint32_t tt;
+    tt = paddr_read(tpaddr0,4);
+    Log("addr = %x pde_t = %x \n",tpaddr0,tt);
     if(pde_t.present!=1)
     {
 	printf("addr = %x \n",addr);
