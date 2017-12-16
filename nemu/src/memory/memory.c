@@ -79,6 +79,7 @@ paddr_t page_translate (vaddr_t addr,int w)
     pde_t = (PDE)paddr_read(tpaddr0,4);
     if(pde_t.present!=1)
     {
+	printf("addr = %x \n",addr);
         assert(0);
     }
     pde_t.accessed = 1;
