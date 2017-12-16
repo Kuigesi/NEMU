@@ -45,6 +45,7 @@ uint32_t vaddr_read(vaddr_t addr, int len) {
 	tp = tp + (uint32_t)len -1;
 	if(tp>0xfff)
 	{
+		printf("addr = %x len = %d\n",addr,len);
 		assert(0);
 	}
 	else
