@@ -95,6 +95,7 @@ paddr_t page_translate (vaddr_t addr,int w)
     pte_t = (PTE)paddr_read(tpaddr1,4);;
     if(pte_t.present!=1)
     {
+	printf("addr = %x pde_t = %x\n",addr,tt);
         assert(0);
     }
     pte_t.accessed = 1;
