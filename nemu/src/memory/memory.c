@@ -92,10 +92,11 @@ paddr_t page_translate (vaddr_t addr,int w)
     tpbase1 = tpbase1<<12;
     tpaddr1 = tpbase1 + (tp1<<2);
     PTE pte_t;
-    pte_t = (PTE)paddr_read(tpaddr1,4);;
+    pte_t = (PTE)paddr_read(tpaddr1,4);
+    tt = paddr_read(tpaddr1,4);
     if(pte_t.present!=1)
     {
-	printf("addr = %x pde_t = %x\n",addr,tt);
+	printf("addr = %x pte_t = %x\n",addr,tt);
         assert(0);
     }
     pte_t.accessed = 1;
