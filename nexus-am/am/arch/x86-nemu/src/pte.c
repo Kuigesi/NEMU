@@ -1,4 +1,5 @@
 #include <x86.h>
+#include <stdio.h>
 
 #define PG_ALIGN __attribute((aligned(PGSIZE)))
 
@@ -43,6 +44,7 @@ void _pte_init(void* (*palloc)(), void (*pfree)(void*)) {
   }
 
   set_cr3(kpdirs);
+  //printf("cr3 = %x\n",kpdirs);
   set_cr0(get_cr0() | CR0_PG);
 }
 
@@ -66,6 +68,28 @@ void _switch(_Protect *p) {
 }
 
 void _map(_Protect *p, void *va, void *pa) {
+  uintptr_t temp,tpa1,tb0,tb1;
+  temp = (uintptr_t)va;
+  tb0 = (temp>>22)&0x3ff;
+  tb1 = (temp>>12)&0x3ff;
+  PDE *pde_ptr = (PDE*)(p->ptr);
+  PTE *pte_base;
+  if(pde_ptr[tb0]!=(pde_ptr[tb0] | PTE_P))
+  {
+     //printf(" va = %x pde =%x \n",va,pde_ptr[tb0]);
+     pte_base = (PTE*)(palloc_f());
+     pde_ptr[tb0] = ((uintptr_t)(pte_base)) | PTE_P;
+     //printf(" va = %x pde =%x \n",va,pde_ptr[tb0]);
+     pte_base[tb1] = (((uintptr_t)(pa))&0xfffff000) | PTE_P;
+     return;
+  }
+  else
+  {
+     tpa1 = (uintptr_t)(pde_ptr[tb0]&0xfffff000);
+     pte_base = (PTE*)tpa1;
+     pte_base[tb1] = (((uintptr_t)(pa))&0xfffff000) | PTE_P;
+     return;
+  }
 }
 
 void _unmap(_Protect *p, void *va) {

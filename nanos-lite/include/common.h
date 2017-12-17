@@ -21,4 +21,5 @@ size_t fs_filesz(int fd);
 void dispinfo_read(void *,off_t , size_t );
 void fb_write(const void *,off_t , size_t );
 size_t events_read(void *,size_t);
+off_t fs_filestart(int );
 #endif

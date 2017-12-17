@@ -16,7 +16,6 @@ typedef union {
     uintptr_t max_brk;
   };
 } PCB;
-
 extern PCB *current;
 
 #endif

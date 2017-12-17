@@ -1,6 +1,6 @@
 #include "common.h"
 #include "syscall.h"
-
+extern int mm_brk(uint32_t);
 _RegSet* do_syscall(_RegSet *r) {
   uintptr_t a[4];
   a[0] = SYSCALL_ARG1(r);
@@ -55,6 +55,6 @@ int  sys_write(int fd, uintptr_t buf,size_t count)
     }
 }  
 int sys_brk(uintptr_t i)
-{    
-   return 0;
+{
+   return mm_brk( i);
 }
