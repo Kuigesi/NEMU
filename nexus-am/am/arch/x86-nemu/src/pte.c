@@ -96,5 +96,27 @@ void _unmap(_Protect *p, void *va) {
 }
 
 _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *const argv[], char *const envp[]) {
-  return NULL;
+  //uint32_t * start_t = (uint32_t *)ustack.start;
+  uint32_t * end_t = (uint32_t *)ustack.end;
+  //printf("addr = %x\n",start_t);
+  //printf("addr = %x\n",end_t);
+  *(end_t -1) = 0;
+  *(end_t -2) = 0;
+  *(end_t -3) = 0;
+  *(end_t -4) = 0;
+  *(end_t -5) = 0x2;
+  *(end_t -6) = 0x8;
+  *(end_t -7) = 0x8048000;
+  *(end_t -8) = 0;
+  *(end_t -9) = 0x81;
+  *(end_t -10) = 0x1d9a000;
+  *(end_t -11) = 0x1d57000;
+  *(end_t -12) = 0xf20;
+  *(end_t -13) = 0;
+  *(end_t -14) = (uint32_t)(end_t -4);
+  *(end_t -15) = 0x7bb8;
+  *(end_t -16) = 0x1d57004;
+  *(end_t -17) = 0x8048000;
+  //printf("addr = %x\n",end_t-17);
+  return (_RegSet *)(end_t -17);
 }
