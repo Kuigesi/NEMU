@@ -253,10 +253,9 @@ void exec_wrapper(bool print_flag) {
 	  raise_intr(TIMER_IRQ,cpu.eip);
           update_eip();
   }
-  else
-  {
+  
 	  update_eip();
-  } 
+   
 
 
 #ifdef DIFF_TEST
