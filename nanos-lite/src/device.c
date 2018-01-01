@@ -1,4 +1,5 @@
 #include "common.h"
+#include "proc.h"
 
 #define NAME(key) \
   [_KEY_##key] = #key,
@@ -8,6 +9,7 @@ static const char *keyname[256] __attribute__((used)) = {
   _KEYS(NAME)
 };
 
+extern int current_game_num;
 size_t events_read(void *buf, size_t len) {
   int keycode;
   unsigned long  timecode;
@@ -24,6 +26,11 @@ size_t events_read(void *buf, size_t len) {
     if(down)
     {
 	sprintf(buf,"kd %s\n",keyname[keycode]);
+	if(keycode == 13)
+	{
+		//assert(0);
+		current_game_num = (current_game_num == 0 ? 2 : 0);
+	}
     }
     else
     {

@@ -104,7 +104,7 @@ _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *cons
   *(end_t -2) = 0;
   *(end_t -3) = 0;
   *(end_t -4) = 0;
-  *(end_t -5) = 0x2;
+  *(end_t -5) = 0x202;
   *(end_t -6) = 0x8;
   *(end_t -7) = 0x8048000;
   *(end_t -8) = 0;

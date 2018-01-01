@@ -8,6 +8,9 @@
 typedef char bool;
 #define true 1
 #define false 0
+
+//PCB * current_game = NULL;
+
 void ramdisk_read(void *,off_t , size_t );
 void ramdisk_write(const void *,off_t , size_t );
 size_t get_ramdisk_size();
