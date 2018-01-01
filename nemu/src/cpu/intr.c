@@ -13,6 +13,7 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
   rtl_push(&l1);
   rtl_push(&l2);
   rtl_push(&l3);
+  cpu.IF = 0;
   index = NO;
   addr_base = cpu.IDTR.BASE;
   temp = addr_base + 8*index;
@@ -30,4 +31,6 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
 }
 
 void dev_raise_intr() {
+
+	cpu.INTR = true;
 }
